@@ -1,0 +1,21 @@
+ <form id="loginForm" method="POST" action="/login">
+    <p class="email">
+        <label for="login.email">Email</label>
+        <input type="text" id="login.email" name="email" required="required" data-err-req-message="Please enter signed-up email or username."/>
+    </p>
+    <p class="password">
+        <label for="login.password">Password</label>
+        <input type="password" id="login.password" name="password" required="required" data-err-req-message="Please enter password."/>
+    </p>
+    <p>
+        <a id="loginHelp" href="#">Forgot password?</a>
+        <label class="rememberMe" for="login.rememberMe">
+           <input type="checkbox" name="rememberMe" id="login.rememberMe"  /> Stay signed in</label>
+       </p>
+       <div class="formFooter">
+        <div class="signup">
+            <p>Don't have a PartyUp account? 
+                <a href="/register">Create one now.</a></p>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,3 @@
+{  "title": "Party1", "address": "Library", "description": "awesome", "created_at": "whatever", "coords": [-73.5833, 45.5], "date": "12412341"},
+{  "title": "Party2", "address": "Library", "description": "awesome", "created_at": "whatever", "coords": [-73.533, 45.3], "date": "12412341"},
+{  "title": "Party3", "address": "Library", "description": "awesome", "created_at": "whatever", "coords": [-73.6, 45.2], "date": "12412341"}

@@ -1,0 +1,24 @@
+<div>
+    <div><%= party.title %></div>
+    <div><%= party.date %></div>
+    <div><%= party.description %></div>
+    <div><%= party.address %></div>
+    <% party.comments.forEach( function( comment ){ %>
+      <% comment.user.forEach( function( blah ){ %>
+        <div><%= blah.name.first %></div>
+      <% }); %>
+    <div><%= comment.body %></div>
+    <% }); %>
+</div>
+<div>
+ <form id="postForm" action="/party/post" method="post" accept-charset="utf-8">
+    <div class="post-new">
+    <input type="hidden" name="id" value= <%= party._id %> />
+    <div>
+      <input class="input" type="text" name="body" placeholder="What do you want to say about this party?"/>
+    </div>
+    <div>
+      <button type="submit" form="postForm" id="postbtn" class="btn btn-primary" value="Send">Submit Comment</button>
+    </div>
+  </form>
+<div>

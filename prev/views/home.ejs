@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<head>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css'>
+    <link rel='stylesheet' href='/stylesheets/style.css'>
+    <link href='http://fonts.googleapis.com/css?family=Julius+Sans+One' rel='stylesheet' type='text/css'>
+</head>
+<body onload="initMap()">
+    <div class="splashbg" style="background-image:url('/images/OldMontreal-NightLife.jpg');"></div>
+    <div id="beta">
+        <h1>Welcome to
+            <br>
+            <p>PartyUp</p>
+            <p>
+                <button class="primary" id="signup_btn">Create a New Account</button>
+                <p> 
+                    <button class="primary" id="login_btn">Login into PartyUp</button>
+                </p>
+                <button class="facebook" data-provider="facebook"><i class="facebook_24"></i><span>with Facebook</span></button>
+                <button class="twitter" data-provider="twitter"><i class="twitter_24"></i><span>with Twitter</span></button>
+            </p>
+        </h1>
+    </div>
+    <div id="mapcanvas" class="mapcanvas-nli"></div>
+    <script src='https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'></script>
+    <script src='/javascripts/jquery-1.8.2.min.js'></script>
+    <script src='/javascripts/map-functions.js'></script>
+    <script src='/javascripts/bootstrap.min.js'></script>
+</body>

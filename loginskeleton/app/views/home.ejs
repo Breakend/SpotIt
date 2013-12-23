@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
+
+    <title>Prototype</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./public/css/bootstrap.css" rel="stylesheet" media="screen"> <!-- For local testing --> 
+    <link href="/css/bootstrap.css" rel="stylesheet" media="screen"> <!-- For server --> 
+
+    <style>
+      .container {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      h4 {
+        margin-top: 25px;
+      }
+      .row {
+        margin-bottom: 20px;
+      }
+      .row .row {
+        /*margin-top: 10px;*/
+        margin-bottom: 0; 
+        padding-left: 10px; /* EDIT */
+      }
+      [class*="col-"] {
+        /*padding-top: 15px;
+        padding-bottom: 15px;*/
+        background-color: #468A9B;
+        border: 1px solid #ddd;
+        background-color: rgba(70,138,155,.15);
+        border:0px solid rgba(70,138,155,.2);
+      }
+
+      [class*="cell-"] {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        background-color: #468A9B;
+        border: 1px solid #ddd; /* NEED TO FIX */
+        background-color: rgba(70,138,155,.15);
+        border: 1px solid rgba(70,138,155,.2);
+      }
+
+      hr {
+        margin-top: 40px;
+        margin-bottom: 40px;
+      }
+
+      .cell-profile {
+        min-height: 300px;
+      }
+
+      h3 {
+        margin-top: 10px;
+      }
+
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container">
+
+      <div class="page-header">
+        <h1>embr Prototype</h1>
+        <p class="lead">On the left, there will be the user profile and relevent events, on the right there will be possible events located close to the user</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-7">
+          <div class="row cell-profile">
+            <h3>Firstname Lastname</h3>
+            <h5>Auto generated status</h5>
+          </div>
+          <div class="row cell-7">
+            <h3>Name of Event</h3>
+            <h5>A Suggested Event</h5>
+          </div>
+          <div class="row cell-7">
+            <h3>Name of Event</h3>
+            <h5>A Suggested Event</h5>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="row cell-5">
+            <h3>Name of Event</h3>
+            <h5>Close to user</h5>
+          </div>
+          <div class="row cell-5">
+            <h3>Name of Event</h3>
+            <h5>Close to user</h5>
+          </div>  
+          <div class="row cell-5">
+            <h3>Name of Event</h3>
+            <h5>Close to user</h5>
+          </div>
+          <div class="row cell-5">
+            <h3>Name of Event</h3>
+            <h5>Close to user</h5>
+          </div>    
+          <div class="row cell-5">
+            <h3>Name of Event</h3>
+            <h5>Close to user</h5>
+          </div>        
+
+        </div>
+      </div>
+
+ 
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="/js/bootstrap.js"></script> <!-- For server --> 
+    <script src="./public/js/bootstrap.js"></script> <!-- For local testing --> 
+
+  </body>
+</html>

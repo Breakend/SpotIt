@@ -1,0 +1,10 @@
+<% users.forEach( function( user ){ %>
+  <div>
+    <div><%= user.email %></div>
+    <div><%= user.dob %></div>
+    <div><%= user.name.first %></div>
+    <div><%= user.name.last %></div>
+    <div><%= user.gender %></div>
+    <div><%= user.hash %></div>
+  </div>
+<% }); %>
