@@ -70,8 +70,23 @@
           <h4 class="media-heading"><%= post.location %></h4>
           <%= post.body %>
         </div>
+        <% if (user != null) { %>
+        <div>
+          Comments: <br/>
+          <% post.comments.forEach(function(comment){ %>
+          <h5> <%= comment.date %> <h5>
+          <%= comment.body %>
+          <% }); %>
+        </div>
+      <div>
+      <form id ="addcomment" action="/post/<%=post._id%>/comment" method = "post" >
+      <input class="input" size="65" type="text" name="body" placeholder="What have you got to say about this post?"/> <br/>
+      <button type="submit" class="btn btn-primary" value="Send">Comment!</button>
+      </form>
       </div>
-        <% }); %>
+       <% } %>
+      </div>
+      <% }); %>
 
     </div> <!-- /container -->
     <br/><br/>

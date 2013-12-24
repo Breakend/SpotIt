@@ -11,6 +11,7 @@ var Auth = require('./middlewares/authorization.js');
 module.exports = function(app, passport){
 
 	app.post('/post/new', Post.createPost);
+	app.post('/post/:id/comment', Post.comment);
 
 	// Get: login screen
 	app.get('/login', function(req, res){

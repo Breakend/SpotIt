@@ -1,4 +1,5 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
 
 var PostSchema = new mongoose.Schema({
   user_id      : String,
@@ -7,15 +8,32 @@ var PostSchema = new mongoose.Schema({
   date      : Date,
   body      : String,
   img_url   : String,
-  vid_url   : String
-  // comments  : [CommentSchema]
+  vid_url   : String,
+  comments  : [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
 });
 
 PostSchema.index({'coords': '2d'});
 
+PostSchema.statics.comment = function(req, res){
+  console.log("in comment");
+  var comment  = new Comment({
+    user_id : req.body.user,
+    date : new Date(),
+    body : req.body.body
+  });
+  comment.save();
+  console.log(req.params.id);
+ Post.findOne({_id: req.params.id}, function(error, post) {
+    post.comments.push(comment);
+    post.save();
+    res.redirect('/');
+  });
+};
+
 PostSchema.statics.getAll = function(done) {
-  this.find({}, function (error, posts) {
+  this.find().sort('date').populate('comments').exec(function (error, posts) {
       done(error, posts);
+      console.log(posts);
     });
 };
 
@@ -23,6 +41,7 @@ PostSchema.statics.createPost = function ( req, res ){
   console.log("In post create");
   //TODO: Figure our video and pix posting
   if(req.body.postlat && req.body.postlon){
+    //This is if it gets the location automatically, otherwise gets it from the address bar
     Post.create({
       user_id: req.body.user,
       location: req.body.location,
@@ -70,5 +89,7 @@ function geocode(address, callback) {
 }
 
 var Post = mongoose.model('Post', PostSchema);
+var Comment     = mongoose.model( 'Comment' );
+
 module.exports = Post;
 // module.exports = mongoose.model('Comment', CommentSchema);
