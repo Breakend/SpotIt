@@ -45,7 +45,7 @@
       <!-- Static navbar -->
       <div class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">The Feed</a>
+          <a class="navbar-brand" href="/">The Feed</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -61,55 +61,59 @@
         </div><!--/.nav-collapse -->
       </div>
 
-        <% posts.forEach( function( post ){ %>
-      <div class="media">
-        <a class="pull-left" href="#">
-        <img class="media-object" src="http://placehold.it/60x60">
-        </a>
-        <div class="media-body">
-          <h4 class="media-heading"><%= post.location %></h4>
-          <%= post.body %>
-        </div>
-        <% if (user != null) { %>
-        <div>
-          Comments: <br/>
-          <% post.comments.forEach(function(comment){ %>
-          <h5> <%= comment.date %> <h5>
-          <%= comment.body %>
-          <% }); %>
-        </div>
-      <div>
-      <form id ="addcomment" action="/post/<%=post._id%>/comment" method = "post" >
-      <input class="input" size="65" type="text" name="body" placeholder="What have you got to say about this post?"/> <br/>
-      <button type="submit" class="btn btn-primary" value="Send">Comment!</button>
-      </form>
-      </div>
-       <% } %>
-      </div>
-      <% }); %>
+      <% if (user != null) { %>
+        <form id="postform" action="/post/new" method="post" accept-charset="utf-8">
+          <textarea class="form-control" rows="3" name="body" placeholder="Post to spotted"></textarea>
+          <div class="input-group input-group-sm" style="margin-top:5px">
+              <input type="text" class="form-control" name="location" placeholder="Where are you?">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="submit" value="Send">Post anon</button>
+              </span>
+          </div><!-- /input-group -->
+        </form>
+      <% } %>
+
+
+      <% posts.forEach( function( post ){ %>
+        <div class="media">
+          <a class="pull-left" href="#">
+          <img class="media-object" src="/crest.jpg" height="60" width="49">
+          </a>
+          <div class="media-body">
+            <h4 class="media-heading"><%= post.location %></h4>
+            <div style="min-height:20px;">
+              <%= post.body %>
+            </div>
+           
+            <% post.comments.forEach(function(comment){ %>
+              <div class="media">
+                <div class="pull-left" style="max-width:14px;">
+                  <a href="#"><span class="glyphicon glyphicon-chevron-up"></span></a>
+                  <a href="#"><span class="glyphicon glyphicon-chevron-down" style="margin-left:-1px;"></span></a>
+                </div>
+                <div class="media-body">
+                  <h5 class="media-heading"><%= comment.date %></h5>
+                  <%= comment.body %>
+                </div>
+              </div>
+            <% }); %>
+
+            <% if (user != null) { %>
+              <form id ="addcomment" action="/post/<%=post._id%>/comment" method="post">
+                <div class="input-group input-group-sm" style="margin-top:10px">
+                  <input type="text" class="form-control"  name="body" placeholder="Comment">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit" value="Send">Post</button>
+                  </span>
+                </div><!-- /input-group -->
+              </form>  
+            <% } %>
+          </div>
+        </div>  
+      <% }); %>  
 
     </div> <!-- /container -->
-    <br/><br/>
-    <div class="container">
-      <% if (user != null) { %>
-          <h3> Create a post! </h3>
 
-          <form id="postform" action="/post/new" method="post" accept-charset="utf-8">
-            <div class="new-post">
-            <div>
-              <input class="input" size="75" type="text" name="location" placeholder="Where it at? Will use your current location by default..."/>
-            </div>
-            <br/>
-            <div>
-              <textarea rows="15" cols="75" name="body" placeholder="Let's hear about this spotted event!"></textarea>
-            </div>
-            </div>
-            <div>
-              <button type="submit" class="btn btn-primary" value="Send">Submit</button>
-            </div>
-          </form>
-      <% } %>
-    </div> <!-- create a post -->
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
