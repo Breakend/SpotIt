@@ -9,6 +9,8 @@ var PostSchema = new mongoose.Schema({
   body      : String,
   img_url   : String,
   vid_url   : String,
+  ups       : [{ type: Schema.Types.ObjectId, ref: 'User'}],
+  downs     : [{ type: Schema.Types.ObjectId, ref: 'User'}],
   comments  : [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
 });
 
@@ -17,7 +19,7 @@ PostSchema.index({'coords': '2d'});
 PostSchema.statics.comment = function(req, res){
   console.log("in comment");
   var comment  = new Comment({
-    user_id : req.body.user,
+    user_id : req.user._id,
     date : new Date(),
     body : req.body.body
   });
@@ -30,20 +32,80 @@ PostSchema.statics.comment = function(req, res){
   });
 };
 
+PostSchema.statics.upvote = function(req, res){
+ Post.findOne({_id: req.params.id}, function(error, post) {
+    User.findOne({_id: req.user._id}, function(error, user){
+
+
+      if (post.ups.indexOf(user._id) < 0){
+        post.ups.push(user);
+        //if in the downs, remove from downs and put in the ups
+        var index = post.downs.indexOf(user._id);
+        if (index > -1) {
+          post.downs.splice(index, 1);
+        }
+        post.save();
+      } else{
+        //Want to unvote...
+        var index = post.ups.indexOf(user._id);
+        if (index > -1) {
+          post.ups.splice(index, 1);
+        }
+        post.save();
+
+      }
+
+      //TODO: error handling
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end();
+    })
+ })
+};
+
+PostSchema.statics.downvote = function(req, res){
+ Post.findOne({_id: req.params.id}, function(error, post) {
+    User.findOne({_id: req.user._id}, function(error, user){
+      if (post.downs.indexOf(user._id) < 0 && !error){
+        post.downs.push(user);
+        var index = post.ups.indexOf(user._id);
+        if (index > -1) {
+          post.ups.splice(index, 1);
+        }
+        post.save();
+      }
+      else{
+        //Want to unvote...
+        var index = post.downs.indexOf(user._id);
+        if (index > -1) {
+          post.downs.splice(index, 1);
+        }
+        post.save();
+
+      }
+
+      //TODO: error handling
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end();
+    });
+ });
+};
+
 PostSchema.statics.getAll = function(done) {
-  this.find().sort('date').populate('comments').exec(function (error, posts) {
+  this.find().sort('date').populate('comments user').exec(function (error, posts) {
       done(error, posts);
       console.log(posts);
     });
 };
 
 PostSchema.statics.createPost = function ( req, res ){
+  console.log("User", req.body.user);
+  console.log("request: ", req);
   console.log("In post create");
   //TODO: Figure our video and pix posting
   if(req.body.postlat && req.body.postlon){
     //This is if it gets the location automatically, otherwise gets it from the address bar
     Post.create({
-      user_id: req.body.user,
+      user_id: req.user._id,
       location: req.body.location,
       body: req.body.body,
       coords: [req.body.postlon, req.body.postlat],
@@ -60,7 +122,7 @@ PostSchema.statics.createPost = function ( req, res ){
     geocode(req.body.location, function(results){
       console.log("In geocode callback");
       Post.create({
-        user_id: req.body.user,
+        user_id: req.user._id,
         location: req.body.location,
         body: req.body.body,
         coords: results,
@@ -88,8 +150,9 @@ function geocode(address, callback) {
   }
 }
 
-var Post = mongoose.model('Post', PostSchema);
-var Comment     = mongoose.model( 'Comment' );
+var User      = mongoose.model( 'User' );
+var Post      = mongoose.model('Post', PostSchema);
+var Comment   = mongoose.model( 'Comment' );
 
 module.exports = Post;
 // module.exports = mongoose.model('Comment', CommentSchema);

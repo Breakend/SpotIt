@@ -6,12 +6,18 @@
 
 var User = require('../app/models/user'); // User api
 var Post = require('../app/models/posts');
+var Comment = require('../app/models/comments');
 var Auth = require('./middlewares/authorization.js');
 
 module.exports = function(app, passport){
 
 	app.post('/post/new', Post.createPost);
 	app.post('/post/:id/comment', Post.comment);
+	app.post('/comment/:id/up', Comment.upvote);
+	app.post('/comment/:id/down', Comment.downvote);
+	// app.post('/post/:id/comment/:id/up', Post.commentupvote);
+	// app.post('/post/:id/comment/:id/down', Post.commentdownvote);
+
 
 	// Get: login screen
 	app.get('/login', function(req, res){

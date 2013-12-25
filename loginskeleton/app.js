@@ -54,11 +54,20 @@ var env = process.env.NODE_ENV || 'development',
 // Connect to mongodb
 mongoose.connect(config.db);
 
+//TODO: problem this loads in alphabetical order, but we need a particular order
+//      since post relies on userschema which has to be registered first with 
+//      mongoose, hence has to be loaded first. Hard coding for now, should
+//      fix later.
 var models_dir = __dirname + '/app/models';
-fs.readdirSync(models_dir).forEach(function (file) {
-  if(file[0] === '.') return; 
-  require(models_dir+'/'+ file);
+// fs.readdirSync(models_dir).forEach(function (file) {
+//   if(file[0] === '.') return; 
+//   require(models_dir+'/'+ file);
+// });
+var models = ['user.js','comments.js', 'posts.js'];
+models.forEach(function(model){
+  require(models_dir+'/'+model);
 });
+
 
 // Require passport.js
 require('./config/passport')(passport, config)

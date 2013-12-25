@@ -1,3 +1,3 @@
-{"user_id" : "123456", "location"  : "Cotuit", "coords" : [-70.2998, 41.6683], "date" : "January 1, 2014", "body" : "Spotted a bird...", "img_url" : null, "vid_url" : null, "comments"  : []}
-{"user_id" : "12346", "location"  : "Cotuit", "coords" : [-70.298, 41.683], "date" : "January 1, 2014", "body" : "Spotted a cow...", "img_url" : null, "vid_url" : null, "comments"  : []}
-{"user_id" : "12356", "location"  : "Cotuit", "coords" : [-70.98, 41.83], "date" : "January 1, 2014", "body" : "Spotted a goat...", "img_url" : null, "vid_url" : null, "comments"  : []}
+{"user_id" : "123456", "location"  : "McGill: McLennan Library", "coords" : [-70.2998, 41.6683], "date" : "January 1, 2014", "body" : "Spotted a bird...", "img_url" : null, "vid_url" : null, "comments"  : [], "ups": [], "downs": []}
+{"user_id" : "12346", "location"  : "McGill: Schulich Library", "coords" : [-70.298, 41.683], "date" : "January 1, 2014", "body" : "Spotted a cow...", "img_url" : null, "vid_url" : null, "comments"  : [], "ups": [], "downs": []}
+{"user_id" : "12356", "location"  : "McGill: McConnell Engineering", "coords" : [-70.98, 41.83], "date" : "January 1, 2014", "body" : "Spotted a goat...", "img_url" : null, "vid_url" : null, "comments"  : [], "ups": [], "downs": []}
