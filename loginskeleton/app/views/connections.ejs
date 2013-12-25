@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
+
+  <title>Feed</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="/css/bootstrap.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <style>
+    body {
+      min-height: 2000px;
+      padding-top: 20px;
+    }
+  </style>
+
+  <!-- Just for debugging purposes. Don't actually copy this line! -->
+  <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+      <![endif]-->
+    </head>
+
+    <body>
+
+      <%
+      function getEmail() {
+        if(user != null) { return user.email; } 
+        else { return "anon"; } 
+        }
+        %>  
+
+        <div class="container" style="max-width:750px;">
+          <!-- Static navbar -->
+          <div class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="/">The Feed</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+                <li><a><%= getEmail() %></a></li>
+                <li>
+                  <% if (user != null) { %>
+                  <a href="./logout">Logout</a>
+                  <% } else { %>
+                  <a href="./login">Login</a>
+                  <% } %>
+                </li>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
+
+          <h2> Pending Connections (THIS IS JUST FOR TESTING, SHOULDN'T SHOW INFO IN REAL LIFE) </h2>
+          <% user.connectionPending.forEach(function(connection){ %>
+              <div class="media">
+                <div class="pull-left" style="max-width:30px;">
+                <%=connection.firstName %> <%=connection.lastName%>
+                  <%= connection.email %>
+                </div>
+              </div>
+          <% }); %>
+
+          <h2> Requested Connections: </h2>
+          <% user.connectionRequests.forEach(function(connection){ %>
+              <div class="media">
+                <div class="pull-left" style="max-width:30px;">
+                <%=connection.firstName %> <%=connection.lastName%> <br/>
+                                  <%= connection.email %>
+                </div>
+                <div class="pull-right" style="max-width:30px;">
+                <a href="javascript:vote('/user/<%=connection._id%>/connection/accept', this)"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+                <a href="javascript:vote('/user/<%=connection._id%>/connection/reject', this)"><span class="glyphicon glyphicon-thumbs-down"></span></a>
+              </div>
+              </div>
+          <% }); %>
+
+          <h2> Connections </h2>
+          <% user.connections.forEach(function(connection){ %>
+              <div class="media">
+                <div class="pull-left" style="max-width:30px;">
+                <%=connection.firstName %> <%=connection.lastName%>
+                  <%= connection.email %>
+                </div>
+              </div>
+          <% }); %>
+
+        </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/js/bootstrap.js"></script>
+    <script>
+     function vote(url){
+      // TODO: need to add error response if user has already voted, i.e. on the server side check if user id there
+      $.post(url, {} );
+    }
+  </script>
+</body>
+</html>

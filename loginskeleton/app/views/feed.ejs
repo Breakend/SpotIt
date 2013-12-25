@@ -52,6 +52,7 @@
                 <li><a><%= getEmail() %></a></li>
                 <li>
                   <% if (user != null) { %>
+                  <a href="./connections">Connections </a>
                   <a href="./logout">Logout</a>
                   <% } else { %>
                   <a href="./login">Login</a>
@@ -83,6 +84,12 @@
               <a href="javascript:vote('/post/<%=post._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down" style="margin-left:-1px;"><%=post.downs.length%></span></a>
               <% } %>
             </div>
+            <div class="pull-right" style="max-width:30px;">
+              <!-- TODO: it would be cool to highlight the chevron you've already voted on -->
+              <% if (user != null && user._id != post.user_id) { %>
+              <a href="javascript:vote('/user/<%=post.user_id%>/connect', this)"><span class="glyphicon glyphicon-link"></span></a>
+              <% } %>
+            </div>
             <a class="pull-left" href="#">
               <img class="media-object" src="/crest.jpg" height="60" width="49">
             </a>
@@ -94,7 +101,7 @@
 
               <% post.comments.forEach(function(comment){ %>
               <div class="media">
-                <div class="pull-left" style="max-width:14px;">
+                <div class="pull-left" style="max-width:30px;">
                   <% if (user != null) { %>
                   <a href="javascript:vote('/comment/<%=comment._id%>/up', this)"><span class="glyphicon glyphicon-chevron-up"><%=comment.ups.length%></span></a>
                   <a href="javascript:vote('/comment/<%=comment._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down" style="margin-left:-1px;"><%=comment.downs.length%></span></a>

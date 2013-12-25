@@ -15,8 +15,17 @@ module.exports = function(app, passport){
 	app.post('/post/:id/comment', Post.comment);
 	app.post('/comment/:id/up', Comment.upvote);
 	app.post('/comment/:id/down', Comment.downvote);
-	// app.post('/post/:id/comment/:id/up', Post.commentupvote);
-	// app.post('/post/:id/comment/:id/down', Post.commentdownvote);
+
+	app.get('/connections', function(req, res){
+		User.findOne({_id: req.user._id}).populate('connections connectionPending connectionRequests')
+		.exec(function(error, user){
+			console.log(user);
+			res.render('connections', {user: user});
+		});
+	});
+	app.post('/user/:id/connect', User.requestConnection);
+	app.post('/user/:id/connection/accept', User.acceptConnection);
+	app.post('/user/:id/connection/reject', User.rejectConnection);
 
 
 	// Get: login screen

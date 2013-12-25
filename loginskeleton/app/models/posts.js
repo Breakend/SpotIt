@@ -91,7 +91,7 @@ PostSchema.statics.downvote = function(req, res){
 };
 
 PostSchema.statics.getAll = function(done) {
-  this.find().sort('date').populate('comments user').exec(function (error, posts) {
+  this.find().sort('date').populate('comments ups downs').exec(function (error, posts) {
       done(error, posts);
       console.log(posts);
     });
