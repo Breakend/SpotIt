@@ -93,14 +93,14 @@
             <div class="pull-left" style="max-width:30px;">
               <!-- TODO: it would be cool to highlight the chevron you've already voted on -->
               <% if (user != null) { %>
-              <a href="javascript:vote('/post/<%=post._id%>/up', this)"><span class="glyphicon glyphicon-chevron-up <%=hasUp(post)%>"><%=post.ups.length%></span></a>
-              <a href="javascript:vote('/post/<%=post._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down <%=hasDown(post)%>" style="margin-left:-1px;"><%=post.downs.length%></span></a>
+              <a onclick="vote('/post/<%=post._id%>/up', this)"><span class="glyphicon glyphicon-chevron-up <%=hasUp(post)%>"><%=post.ups.length%></span></a>
+              <a onclick="vote('/post/<%=post._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down <%=hasDown(post)%>" style="margin-left:-1px;"><%=post.downs.length%></span></a>
               <% } %>
             </div>
             <div class="pull-right" style="max-width:30px;">
               <!-- TODO: it would be cool to highlight the chevron you've already voted on -->
               <% if (user != null && user._id != post.user_id) { %>
-              <a href="javascript:vote('/user/<%=post.user_id%>/connect', this)"><span class="glyphicon glyphicon-link"></span></a>
+              <a onclick="post('/user/<%=post.user_id%>/connect', this)"><span class="glyphicon glyphicon-link"></span></a>
               <% } %>
             </div>
             <a class="pull-left" href="#">
@@ -116,8 +116,8 @@
               <div class="media">
                 <div class="pull-left" style="max-width:30px;">
                   <% if (user != null) { %>
-                  <a href="javascript:vote('/comment/<%=comment._id%>/up', this)"><span class="glyphicon glyphicon-chevron-up <%=hasUp(comment)%>"><%=comment.ups.length%></span></a>
-                  <a href="javascript:vote('/comment/<%=comment._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down <%=hasDown(comment)%>" style="margin-left:-1px;"><%=comment.downs.length%></span></a>
+                  <a onclick="vote('/comment/<%=comment._id%>/up', this)"><span class="glyphicon glyphicon-chevron-up <%=hasUp(comment)%>"><%=comment.ups.length%></span></a>
+                  <a onclick="vote('/comment/<%=comment._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down <%=hasDown(comment)%>" style="margin-left:-1px;"><%=comment.downs.length%></span></a>
                   <% } %>   
                 </div>
                 <div class="media-body">
@@ -152,9 +152,33 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/js/bootstrap.js"></script>
     <script>
+    function hasClass(element, cls) {
+      return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+    }
+
+    function post(url){
+      $.post(url, {});
+    }
+     
      function vote(url){
+      var element = event.target;
       // TODO: need to add error response if user has already voted, i.e. on the server side check if user id there
       $.post(url, {} );
+      if (hasClass(element, 'has-vote')){
+        $(element).removeClass('has-vote');
+        element.innerHTML = parseInt(element.innerHTML) - 1;
+      }
+      else{
+        var children = element.parentNode.parentNode.children;
+        for(i=0;i<children.length;i++){
+          if(hasClass(children[i].children[0], 'has-vote')){
+            $(children[i].children[0]).removeClass('has-vote');
+            children[i].children[0].innerHTML = parseInt(children[i].children[0].innerHTML) - 1;
+          }
+        };
+        $(element).addClass('has-vote');
+        element.innerHTML = parseInt(element.innerHTML) + 1;
+      }
     }
   </script>
 </body>
