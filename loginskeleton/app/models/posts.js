@@ -56,8 +56,9 @@ PostSchema.statics.upvote = function(req, res){
       }
 
       //TODO: error handling
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end();
+      res.redirect('/');
+      // res.writeHead(200, { 'Content-Type': 'application/json' });
+      // res.end();
     })
  })
 };
@@ -91,7 +92,7 @@ PostSchema.statics.downvote = function(req, res){
 };
 
 PostSchema.statics.getAll = function(done) {
-  this.find().sort('date').populate('comments ups downs').exec(function (error, posts) {
+  this.find().sort({date: -1}).populate('comments ups downs').exec(function (error, posts) {
       done(error, posts);
       console.log(posts);
     });

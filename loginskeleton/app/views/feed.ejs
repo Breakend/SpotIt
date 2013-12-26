@@ -20,6 +20,9 @@
       min-height: 2000px;
       padding-top: 20px;
     }
+    .has-vote{
+      color: Gold;
+    }
   </style>
 
   <!-- Just for debugging purposes. Don't actually copy this line! -->
@@ -39,6 +42,16 @@
         if(user != null) { return user.email; } 
         else { return "anon"; } 
         }
+
+      function hasUp(post){
+        if(post.hasUp) return "has-vote"
+        return "";
+      }
+
+      function hasDown(post){
+        if(post.hasDown) return "has-vote"
+        return "";
+      }  
         %>  
 
         <div class="container" style="max-width:750px;">
@@ -80,8 +93,8 @@
             <div class="pull-left" style="max-width:30px;">
               <!-- TODO: it would be cool to highlight the chevron you've already voted on -->
               <% if (user != null) { %>
-              <a href="javascript:vote('/post/<%=post._id%>/up', this)"><span class="glyphicon glyphicon-chevron-up"><%=post.ups.length%></span></a>
-              <a href="javascript:vote('/post/<%=post._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down" style="margin-left:-1px;"><%=post.downs.length%></span></a>
+              <a href="javascript:vote('/post/<%=post._id%>/up', this)"><span class="glyphicon glyphicon-chevron-up <%=hasUp(post)%>"><%=post.ups.length%></span></a>
+              <a href="javascript:vote('/post/<%=post._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down <%=hasDown(post)%>" style="margin-left:-1px;"><%=post.downs.length%></span></a>
               <% } %>
             </div>
             <div class="pull-right" style="max-width:30px;">
@@ -103,8 +116,8 @@
               <div class="media">
                 <div class="pull-left" style="max-width:30px;">
                   <% if (user != null) { %>
-                  <a href="javascript:vote('/comment/<%=comment._id%>/up', this)"><span class="glyphicon glyphicon-chevron-up"><%=comment.ups.length%></span></a>
-                  <a href="javascript:vote('/comment/<%=comment._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down" style="margin-left:-1px;"><%=comment.downs.length%></span></a>
+                  <a href="javascript:vote('/comment/<%=comment._id%>/up', this)"><span class="glyphicon glyphicon-chevron-up <%=hasUp(comment)%>"><%=comment.ups.length%></span></a>
+                  <a href="javascript:vote('/comment/<%=comment._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down <%=hasDown(comment)%>" style="margin-left:-1px;"><%=comment.downs.length%></span></a>
                   <% } %>   
                 </div>
                 <div class="media-body">

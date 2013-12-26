@@ -13,6 +13,8 @@ module.exports = function(app, passport){
 
 	app.post('/post/new', Post.createPost);
 	app.post('/post/:id/comment', Post.comment);
+	app.post('/post/:id/down', Post.downvote);
+	app.post('/post/:id/up', Post.upvote);
 	app.post('/comment/:id/up', Comment.upvote);
 	app.post('/comment/:id/down', Comment.downvote);
 
@@ -65,6 +67,28 @@ module.exports = function(app, passport){
 	app.get('/', function(req, res){
 		Post.getAll(function(error, posts){
 			if(req.isAuthenticated()){
+				//This is to make the chevron light up
+				//it probably shouldn't be here but ejs is being a pain
+				//and not allowing me to compare user ids in the ups and downs
+				// arrays to check there...
+		        posts.forEach(function(post){
+		        	post.ups.forEach(function(puser){
+		        		if(puser._id.equals(req.user._id)) post.hasUp=true;
+		        	});
+		        	post.downs.forEach(function(puser){
+		        		if(puser._id.equals(req.user._id)) post.hasDown=true;
+		        	});
+		        	post.comments.forEach(function(comment){
+		        		// console.log(comment);
+			        	comment.ups.forEach(function(cuser){
+			        		if(cuser.equals(req.user._id)) comment.hasUp=true;
+			        	});
+			        	comment.downs.forEach(function(cuser){
+			        		if(cuser.equals(req.user._id)) comment.hasDown=true;
+			        	});
+		        	});
+      			});
+
 				res.render("feed", { user : req.user, posts: posts}); 
 			}else{
 				res.render("feed", { user : null, posts: posts});
