@@ -19,15 +19,30 @@ module.exports = function(app, passport){
 	app.post('/comment/:id/down', Comment.downvote);
 
 	app.get('/connections', function(req, res){
-		User.findOne({_id: req.user._id}).populate('connections connectionPending connectionRequests')
-		.exec(function(error, user){
-			console.log(user);
-			res.render('connections', {user: user});
-		});
+		if(req.isAuthenticated()){
+			User.findOne({_id: req.user._id}).populate('connections connectionPending connectionRequests')
+			.exec(function(error, user){
+				console.log(user);
+				res.render('connections', {user: user});
+			});
+		}else{
+			res.redirect("/login");
+		}
+			
 	});
 	app.post('/user/:id/connect', User.requestConnection);
 	app.post('/user/:id/connection/accept', User.acceptConnection);
 	app.post('/user/:id/connection/reject', User.rejectConnection);
+
+	
+	// Get: message screen
+	app.get('/message', function(req, res){
+		if(req.isAuthenticated()){
+			res.render('message',{ user : req.user}); // Should render the messages for a group of users (prob just 2)
+		}else{
+			res.redirect("/login");
+		}	
+	});	
 
 
 	// Get: login screen

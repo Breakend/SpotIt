@@ -17,7 +17,6 @@ exports.userExist = function(req, res, next) {
             next();
         } else {
             // Pass a flash message informing the page that the email already exists
-            res.redirect("/signup");
             req.flash('error', 'Email already taken.'); 
             res.redirect("/signup");
         }

@@ -63,9 +63,11 @@
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
                 <li><a><%= getEmail() %></a></li>
+                <% if (user != null) { %>
+                <li><a href="./connections">Connections</a></li>
+                <% } %>
                 <li>
                   <% if (user != null) { %>
-                  <a href="./connections">Connections </a>
                   <a href="./logout">Logout</a>
                   <% } else { %>
                   <a href="./login">Login</a>
@@ -107,9 +109,19 @@
               <img class="media-object" src="/crest.jpg" height="60" width="49">
             </a>
             <div class="media-body">
-              <h4 class="media-heading"><%= post.location %></h4>
-              <div style="min-height:20px;">
-                <%= post.body %>
+              
+              <div class="media">
+                <div class="pull-left" style="width:80%; margin-right:0px;">
+                  <h4 class="media-heading"><%= post.location %></h4>
+                  <div style="min-height:20px;"><%= post.body %></div>
+                </div>
+
+                <% if (user != null) { %>
+                  <div class="pull-right">
+                    <a href="./message" class="btn btn-lg" role="button"><span class="glyphicon glyphicon glyphicon-comment"></a>
+                  </div>  
+                <% } %>
+
               </div>
 
               <% post.comments.forEach(function(comment){ %>

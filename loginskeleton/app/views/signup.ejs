@@ -25,6 +25,16 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+
+    <style>
+      .form-middle {
+        border-bottom-left-radius:0px;
+        border-bottom-right-radius:0px;
+        border-top-left-radius:0px;
+        border-top-right-radius:0px;
+      }
+    </style>
+
   </head>
 
   <body>
@@ -34,12 +44,14 @@
       <form class="form-signin" role="form" method="POST", action="/signup">
         <h2 class="form-signin-heading">Sign up here!</h2>
         
+        <input type="text" class="form-control" placeholder="First Name" name="firstName" required autofocus>
+        <input type="text" class="form-control form-middle" placeholder="Last Name" name="lastName" required autofocus>
         <% if (err != "") { %>
           <div class="form-group has-error" style="margin-bottom:0px;">
-            <input type="text" class="form-control" id="inputError" placeholder="Email already in use." name="email" required autofocus>
+            <input type="text" class="form-control form-middle" id="inputError" placeholder="Email already in use." name="email" required autofocus>
           </div>
         <% } else { %>
-          <input type="text" class="form-control" placeholder="Email address" name="email" required autofocus>
+          <input type="text" class="form-control form-middle" placeholder="Email address" name="email" required autofocus>
         <% } %>
 
         <input type="password" class="form-control" placeholder="Password" name="password" required>

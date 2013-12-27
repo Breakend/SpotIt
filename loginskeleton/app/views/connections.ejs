@@ -50,6 +50,7 @@
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
                 <li><a><%= getEmail() %></a></li>
+                <li><a href="./connections">Connections</a></li>
                 <li>
                   <% if (user != null) { %>
                   <a href="./logout">Logout</a>
@@ -94,6 +95,23 @@
                 </div>
               </div>
           <% }); %>
+
+          <ul class="list-group">
+            <li class="list-group-item">
+              <span class="badge">1</span>
+              <a href="/message">Sample msg</a> 
+            </li>
+            <li class="list-group-item">
+              <span class="badge">4</span>
+              <a href="/message">Click to open convo</a>
+            </li>
+            <li class="list-group-item">
+              <span class="badge">2</span>
+              <a href="/message">Badge (number) can display the number of unread messages?</a> 
+            </li>
+          </ul>
+
+
 
         </div> <!-- /container -->
 
