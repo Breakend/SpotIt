@@ -28,6 +28,13 @@ UserSchema = mongoose.Schema({
 UserSchema.statics.requestConnection = function(req, res){
 	User.findOne({_id : req.user._id}, function(err, me){
 		User.findOne({_id : req.params.id}, function(err, requested){
+			if(err){
+			 console.log(err);
+			 res.writeHead(500, 'Internal server error.');
+			 res.end();
+			 return;
+			}
+
 			if(!me.connectionPending) me.connectionPending = []
 			if(!requested.connectionRequests) requested.connectionRequests = []
 
@@ -49,6 +56,13 @@ UserSchema.statics.requestConnection = function(req, res){
 UserSchema.statics.acceptConnection = function(req, res){
 	User.findOne({_id : req.user._id}, function(err, me){
 		User.findOne({_id : req.params.id}, function(err, requested){
+			if(err){
+			 console.log(err);
+			 res.writeHead(500, 'Internal server error.');
+			 res.end();
+			 return;
+			}
+
 			if(!me.connectionRequests) me.connectionRequests = []
 			if(!requested.connectionPending) requested.connectionPending = []
 			if(!me.connections) me.connections = []
@@ -80,6 +94,13 @@ UserSchema.statics.rejectConnection = function(req, res){
 	console.log(req.params);
 	User.findOne({_id : req.user._id}, function(err, me){
 		User.findOne({_id : req.params.id}, function(err, requested){
+			if(err){
+			 console.log(err);
+			 res.writeHead(500, 'Internal server error.');
+			 res.end();
+			 return;
+			}
+
 			if(!me.connectionRequests) me.connectionRequests = []
 			if(!requested.connectionPending) requested.connectionPending = []
 
