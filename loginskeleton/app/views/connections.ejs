@@ -64,39 +64,54 @@
 
           <h2> Pending Connections (THIS IS JUST FOR TESTING, SHOULDN'T SHOW INFO IN REAL LIFE) </h2>
           <% user.connectionPending.forEach(function(connection){ %>
+            <% connection.users.forEach(function(usr){ %>
+              <% if (!usr._id.equals(user._id)) { %>
               <div class="media">
                 <div class="pull-left" style="max-width:30px;">
-                <%=connection.firstName %> <%=connection.lastName%>
-                  <%= connection.email %>
+                <%=usr.firstName %> <%=usr.lastName%>
+                  <%= usr.email %>
                 </div>
               </div>
+              <%};%>
+            <% }); %>
           <% }); %>
 
           <h2> Requested Connections: </h2>
           <% user.connectionRequests.forEach(function(connection){ %>
+            <% connection.users.forEach(function(usr){ %>
+              <% if (!usr._id.equals(user._id)) { %>
               <div class="media">
                 <div class="pull-left" style="max-width:30px;">
-                <%=connection.firstName %> <%=connection.lastName%> <br/>
-                                  <%= connection.email %>
+                <%=usr.firstName %> <%=usr.lastName%>
+                  <%= usr.email %>
                 </div>
                 <div class="pull-right" style="max-width:30px;">
-                <a href="javascript:vote('/user/<%=connection._id%>/connection/accept', this)"><span class="glyphicon glyphicon-thumbs-up"></span></a>
-                <a href="javascript:vote('/user/<%=connection._id%>/connection/reject', this)"><span class="glyphicon glyphicon-thumbs-down"></span></a>
+                <a href="javascript:vote('/user/<%=usr._id%>/connection/accept', this)"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+                <a href="javascript:vote('/user/<%=usr._id%>/connection/reject', this)"><span class="glyphicon glyphicon-thumbs-down"></span></a>
               </div>
               </div>
+              <%};%>
+            <% }); %>
           <% }); %>
 
           <h2> Connections </h2>
           <% user.connections.forEach(function(connection){ %>
+            <% connection.users.forEach(function(usr){ %>
+              <% if (!usr._id.equals(user._id)) { %>
               <div class="media">
                 <div class="pull-left" style="max-width:30px;">
-                <%=connection.firstName %> <%=connection.lastName%>
-                  <%= connection.email %>
+                <%=usr.firstName %> <%=usr.lastName%>
+                  <%= usr.email %>
                 </div>
+                  <div class="pull-right">
+                    <a href="/connection/<%=connection._id%>/messages" class="btn btn-lg" role="button"><span class="glyphicon glyphicon glyphicon-comment"></a>
+                  </div>  
               </div>
+              <%};%>
+            <% }); %>
           <% }); %>
 
-          <ul class="list-group">
+<!--           <ul class="list-group">
             <li class="list-group-item">
               <span class="badge">1</span>
               <a href="/message">Sample msg</a> 
@@ -109,7 +124,7 @@
               <span class="badge">2</span>
               <a href="/message">Badge (number) can display the number of unread messages?</a> 
             </li>
-          </ul>
+          </ul> -->
 
 
 

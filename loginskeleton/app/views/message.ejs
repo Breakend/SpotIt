@@ -28,6 +28,8 @@
         border-radius: 4px;
         border: 1px solid #e1e1e8;
         padding: 9px 14px;
+        background-color: gray;
+        color: white;
       }
 
       .message-right {
@@ -38,6 +40,8 @@
         border-radius: 4px;
         border: 1px solid #e1e1e8;
         padding: 9px 14px;
+        background-color: #8B0000;
+        color: white;
       }
 
       .media-right {
@@ -90,50 +94,40 @@
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
                 <li><a><%= getEmail() %></a></li>
-                <li><a href="./connections">Connections</a></li>
+                <li><a href="/connections">Connections</a></li>
                 <li>
                   <% if (user != null) { %>
-                  <a href="./logout">Logout</a>
+                  <a href="/logout">Logout</a>
                   <% } else { %>
-                  <a href="./login">Login</a>
+                  <a href="/login">Login</a>
                   <% } %>
                 </li>
               </ul>
             </div><!--/.nav-collapse -->
           </div>
 
-
           <div class="chat-top">
-            <div class="row">
-              <div class="message-left pull-left">
-                Start of some conversation
+          <% connection.messages.forEach(function(message){ %>
+            <% if (message.sender._id.equals(user._id)){ %>
+              <div class="row">
+                <div class="message-right pull-right">
+                  <%= message.body%>
+                </div>
               </div>
-            </div>
-
-            <div class="row">
-              <div class="message-right pull-right">
-                You respond
+            <% }else { %>
+              <div class="row">
+                <div class="message-left pull-left">
+                  <%= message.body%>
+                </div>
               </div>
-            </div>
-
-            <div class="row">
-              <div class="message-right pull-right">
-                You say something else 
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="message-left pull-left">
-                And you get a response
-              </div>
-            </div>
-
+            <% }; %>
+          <% }); %>
         </div>
 
         <div class="chat-bottom">
-          <form id="postform" action="" method="post" accept-charset="utf-8">
+          <form id="postform" action="/connection/<%=connection._id%>/message/send" method="post" accept-charset="utf-8">
             <div class="input-group input-group-md" style="margin-top:10px">
-              <input type="text" class="form-control" name="location" placeholder="Message">
+              <input type="text" class="form-control" name="body" placeholder="Message">
               <span class="input-group-btn">
                 <button class="btn btn-default" type="submit" value="Send">Send</button>
               </span>

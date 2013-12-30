@@ -115,13 +115,6 @@
                   <h4 class="media-heading"><%= post.location %></h4>
                   <div style="min-height:20px;"><%= post.body %></div>
                 </div>
-
-                <% if (user != null) { %>
-                  <div class="pull-right">
-                    <a href="./message" class="btn btn-lg" role="button"><span class="glyphicon glyphicon glyphicon-comment"></a>
-                  </div>  
-                <% } %>
-
               </div>
 
               <% post.comments.forEach(function(comment){ %>

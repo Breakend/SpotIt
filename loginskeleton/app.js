@@ -63,7 +63,7 @@ var models_dir = __dirname + '/app/models';
 //   if(file[0] === '.') return; 
 //   require(models_dir+'/'+ file);
 // });
-var models = ['user.js','comments.js', 'posts.js'];
+var models = ['user.js','comments.js', 'posts.js', 'messages.js', 'connections.js'];
 models.forEach(function(model){
   require(models_dir+'/'+model);
 });

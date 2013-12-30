@@ -7,7 +7,9 @@
 var User = require('../app/models/user'); // User api
 var Post = require('../app/models/posts');
 var Comment = require('../app/models/comments');
+var Connection = require('../app/models/connections');
 var Auth = require('./middlewares/authorization.js');
+var deepPopulate = require('../app/util/mongoose-helper.js');
 
 module.exports = function(app, passport){
 
@@ -20,29 +22,47 @@ module.exports = function(app, passport){
 
 	app.get('/connections', function(req, res){
 		if(req.isAuthenticated()){
-			User.findOne({_id: req.user._id}).populate('connections connectionPending connectionRequests')
+			User.findOne({_id: req.user._id})
+			// .populate('connections connectionPending connectionRequests')
 			.exec(function(error, user){
-				console.log(user);
-				res.render('connections', {user: user});
+ 			deepPopulate(user, "connections connectionPending connectionRequests connectionRequests.users connections.users connectionPending.users", 
+ 				{sort:{_id:-1}}, function(err, user){
+					res.render('connections', {user: user});
+ 				});
 			});
 		}else{
 			res.redirect("/login");
 		}
 			
 	});
-	app.post('/user/:id/connect', User.requestConnection);
-	app.post('/user/:id/connection/accept', User.acceptConnection);
-	app.post('/user/:id/connection/reject', User.rejectConnection);
-
-	
-	// Get: message screen
-	app.get('/message', function(req, res){
+	app.post('/user/:id/connect', Connection.requestConnection);
+	app.post('/user/:id/connection/accept', Connection.acceptConnection);
+	app.post('/user/:id/connection/reject', Connection.rejectConnection);
+	app.post('/connection/:id/message/send', Connection.sendMessage);
+	app.get('/connection/:id/messages', function(req, res){
 		if(req.isAuthenticated()){
-			res.render('message',{ user : req.user}); // Should render the messages for a group of users (prob just 2)
+			Connection.findOne({_id: req.params.id})
+			.exec(function(error, conn){
+				deepPopulate(conn, 'messages user messages.sender',{sort:{created:1}},
+				 function(err, conn){
+				 	console.log(conn.messages);
+					res.render('message', {connection: conn,
+											user: req.user});
+				});
+			});
 		}else{
 			res.redirect("/login");
-		}	
-	});	
+		}
+	});
+	
+	// Get: message screen
+	// app.get('/message', function(req, res){
+	// 	if(req.isAuthenticated()){
+	// 		res.render('message',{ user : req.user}); // Should render the messages for a group of users (prob just 2)
+	// 	}else{
+	// 		res.redirect("/login");
+	// 	}	
+	// });	
 
 
 	// Get: login screen
@@ -68,7 +88,7 @@ module.exports = function(app, passport){
 	// Sign 
 	app.post("/signup", Auth.userExist, function (req, res, next) {
 		console.log("routes.js: start sign up");
-		User.signup(req.body.email, req.body.password, function(err, user){
+		User.signup(req.body.firstName, req.body.lastName, req.body.email, req.body.password, function(err, user){
 			console.log("routes.js: req.body.email = "+req.body.email+" req.body.password = "+req.body.password);
 			if(err) throw err;
 			req.login(user, function(err){

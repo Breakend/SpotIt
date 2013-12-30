@@ -144,7 +144,9 @@ var geocoder = require('Geocoder');
 function geocode(address, callback) {
   if(typeof address != 'undefined' && address !== null) {
     geocoder.geocode( address, function( err , data) {
-      console.log(data.results[0].geometry);
+      console.log(err);
+      console.log(data);
+      if(err){ callback([-45, 70]); return;}
       var coords = [data.results[0].geometry.location.lng, data.results[0].geometry.location.lat];
       callback(coords);
     });
