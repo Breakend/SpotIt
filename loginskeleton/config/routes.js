@@ -25,9 +25,12 @@ module.exports = function(app, passport){
 			User.findOne({_id: req.user._id})
 			// .populate('connections connectionPending connectionRequests')
 			.exec(function(error, user){
- 			deepPopulate(user, "connections connectionPending connectionRequests connectionRequests.users connections.users connectionPending.users", 
+			//TODO: maybe make this better so not populating so much..?
+ 			deepPopulate(user, "connections connectionPending connectionRequests connectionRequests.users connections.users connectionPending.users connections.messages connections.messages.sender", 
  				{sort:{_id:-1}}, function(err, user){
-					res.render('connections', {user: user});
+ 					Connection.addNumUnread(user, function(user){
+						res.render('connections', {user: user});
+ 					});
  				});
 			});
 		}else{
@@ -45,7 +48,13 @@ module.exports = function(app, passport){
 			.exec(function(error, conn){
 				deepPopulate(conn, 'messages user messages.sender',{sort:{created:1}},
 				 function(err, conn){
-				 	console.log(conn.messages);
+					conn.messages.forEach(function(message){
+						if(!message.sender._id.equals(req.user._id)){
+					    	message.read = true;
+					    	message.save();
+					    }
+					});
+				 	conn.save();
 					res.render('message', {connection: conn,
 											user: req.user});
 				});

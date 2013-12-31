@@ -19,6 +19,7 @@
       body {
         min-height: 2000px;
         padding-top: 20px;
+        overflow:hidden;
       }
 
       .message-left {
@@ -106,7 +107,7 @@
             </div><!--/.nav-collapse -->
           </div>
 
-          <div class="chat-top">
+          <div class="chat-top" style="height:500px; overflow:scroll;">
           <% connection.messages.forEach(function(message){ %>
             <% if (message.sender._id.equals(user._id)){ %>
               <div class="row">
@@ -146,6 +147,8 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/js/bootstrap.js"></script>
     <script>
+    $(".chat-top").scrollTop($(document).height()+10);
+
      function vote(url){
       // TODO: need to add error response if user has already voted, i.e. on the server side check if user id there
       $.post(url, {} );

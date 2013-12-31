@@ -7,6 +7,19 @@ ConnectionSchema = mongoose.Schema({
 	messages : [{ type: Schema.Types.ObjectId, ref: 'Message'}]
 });
 
+//TODO: There may be a more efficient way of doing this with mongo commands...
+ConnectionSchema.statics.addNumUnread = function(user, callback){
+	//assuming messages already populated...
+	user.connections.forEach(function(connection){
+		connection.unread = 0;
+		connection.messages.forEach(function(message){
+			if(!message.sender._id.equals(user._id) && !message.read)
+				connection.unread +=1;
+		});
+	});
+	callback(user);
+}
+
 ConnectionSchema.statics.sendMessage = function(req, res){
     Connection.findOne({_id: req.params.id}, function(error, connection){
     	User.findOne({_id: req.user._id}, function(error, usr){
