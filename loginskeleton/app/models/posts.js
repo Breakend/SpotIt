@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
 var PostSchema = new mongoose.Schema({
   user_id      : String,
   location  : String,
+  sublocation : String, //Experimental for now
   coords    : [Number, Number],
   date      : Date,
   body      : String,
@@ -108,6 +109,7 @@ PostSchema.statics.createPost = function ( req, res ){
     Post.create({
       user_id: req.user._id,
       location: req.body.location,
+      sublocation: req.body.sublocation,
       body: req.body.body,
       coords: [req.body.postlon, req.body.postlat],
       date : new Date()
@@ -120,11 +122,13 @@ PostSchema.statics.createPost = function ( req, res ){
     });
   }
   else{
+    //Don't know if we really need the geostuff, but leaving it in for now
     geocode(req.body.location, function(results){
       console.log("In geocode callback");
       Post.create({
         user_id: req.user._id,
         location: req.body.location,
+        sublocation: req.body.sublocation,
         body: req.body.body,
         coords: results,
         date : new Date()

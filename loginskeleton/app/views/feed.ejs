@@ -10,7 +10,8 @@
   <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
 
   <title>Feed</title>
-
+  <!-- For the autocomplete feature of post locations -->
+  <!-- <link href="/css/Autocomplete.css" rel="stylesheet"> -->
   <!-- Bootstrap core CSS -->
   <link href="/css/bootstrap.css" rel="stylesheet">
 
@@ -55,6 +56,7 @@
         %>  
 
         <div class="container" style="max-width:750px;">
+
           <!-- Static navbar -->
           <div class="navbar navbar-default" role="navigation">
             <div class="navbar-header">
@@ -64,26 +66,45 @@
               <ul class="nav navbar-nav navbar-right">
                 <li><a><%= getEmail() %></a></li>
                 <% if (user != null) { %>
-                <li><a href="./connections">Connections</a></li>
+                <li><a href="/connections">Connections</a></li>
                 <% } %>
                 <li>
                   <% if (user != null) { %>
-                  <a href="./logout">Logout</a>
+                  <a href="/logout">Logout</a>
                   <% } else { %>
-                  <a href="./login">Login</a>
+                  <a href="/login">Login</a>
                   <% } %>
                 </li>
               </ul>
+              <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a href="#" id="location"
+                      class="dropdown-toggle"
+                      data-toggle="dropdown">
+                      <%=location%>
+                      <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                 <li><a href="/posts/McGill">McGill</a></li>
+                 <li><a href="/posts/Concordia">Concordia</a></li>
+                </ul>
+              </li>
+            </ul>
             </div><!--/.nav-collapse -->
           </div>
 
           <% if (user != null) { %>
           <form id="postform" action="/post/new" method="post" accept-charset="utf-8">
+  <!--          <%if(location){%> -->
+              <input type="hidden" name="location" value="<%=location%>">
+<!--             <%}else{%>
+              <input type="hidden" name="location" value="McGill"> default for now, later should maybe just do an intro select page?
+            <%};%> -->
             <textarea class="form-control" rows="3" name="body" placeholder="Post to spotted"></textarea>
             <div class="input-group input-group-sm" style="margin-top:5px">
-              <input type="text" class="form-control" name="location" placeholder="Where are you?">
+              <input type="text" class="form-control" id="sublocation" name="sublocation" placeholder="Where are you?">
               <span class="input-group-btn">
-                <button class="btn btn-default" type="submit" value="Send">Post anon</button>
+                <button class="btn btn-default" type="submit" value="Send">Post</button>
               </span>
             </div><!-- /input-group -->
           </form>
@@ -112,7 +133,7 @@
               
               <div class="media">
                 <div class="pull-left" style="width:80%; margin-right:0px;">
-                  <h4 class="media-heading"><%= post.location %></h4>
+                  <h4 class="media-heading"><%= post.location %>: <%= post.sublocation %></h4>
                   <div style="min-height:20px;"><%= post.body %></div>
                 </div>
               </div>
@@ -156,7 +177,18 @@
     <script src="https://code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/js/bootstrap.js"></script>
+    <script src="/js/Autocomplete.js"></script>
     <script>
+    //Init autocomplete on posts
+    (function(window, document, undefined) {
+        "use strict";
+        var myAutocomplete = new Autocomplete("sublocation", {
+          srcType : "array",
+          srcData : ["McConnell Engineering", "McLennan", "Law Library", "Trottier", "Arts Building", "Leacock", "Education Building", "Schulich Library", "McMed", "Stewart Bio", "General"]
+      //hardcoding this to mcgill for now, but need to somehow keep track of this list, maybe through a LocationSchema?
+          });
+    })(this, this.document);     
+
     function hasClass(element, cls) {
       return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
     }
