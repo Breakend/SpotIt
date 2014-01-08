@@ -1,1 +1,1 @@
-web: node loginskeleton/app.js
+web: node app.js
