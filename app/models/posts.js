@@ -144,7 +144,7 @@ PostSchema.statics.createPost = function ( req, res ){
   }
 };
 
-var geocoder = require('Geocoder');
+var geocoder = require('geocoder');
 function geocode(address, callback) {
   if(typeof address != 'undefined' && address !== null) {
     geocoder.geocode( address, function( err , data) {
