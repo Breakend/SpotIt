@@ -1,6 +1,6 @@
 module.exports = {
 	development: {
-		db: 'mongodb://<dbuser>:<dbpassword>@ds061288.mongolab.com:61288/spottit',
+		db: 'mongodb://spottitsandbox:spottitsandbox14@ds061288.mongolab.com:61288/spottit',
 		// db: 'mongodb://localhost/spotted',
 		app: {
 			name: 'Passport Authentication Tutorial'
