@@ -39,6 +39,23 @@
     <body>
 
       <%
+      var __urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+      var __imgRegex = /\.(?:jpe?g|gif|png)$/i;
+
+      function parseURL($string){
+
+          var exp = __urlRegex;
+          return $string.replace(exp,function(match){
+                  __imgRegex.lastIndex=0;
+                  if(__imgRegex.test(match)){
+                      return '<img src="'+match+'" class="thumb" />';
+                  }
+                  else{
+                      return '<a href="'+match+'" target="_blank">'+match+'</a>';
+                  }
+              }
+          );
+      }
       function getEmail() {
         if(user != null) { return user.email; } 
         else { return "anon"; } 
@@ -134,7 +151,7 @@
               <div class="media">
                 <div class="pull-left" style="width:80%; margin-right:0px;">
                   <h4 class="media-heading"><%= post.location %>: <%= post.sublocation %></h4>
-                  <div style="min-height:20px;"><%= post.body %></div>
+                  <div style="min-height:20px;"><%- parseURL(post.body) %></div>
                 </div>
               </div>
 
