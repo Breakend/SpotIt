@@ -12,6 +12,10 @@ mongoimport --db spotted --collection posts --file test.json
 
 To push to heroku
 
-need to add remote (can google it)
+Then git push heroku release:master for the release branch or just master otherwise
 
-Then git push heroku release:master
+install the heroku toolkit
+
+you might need to get added as a collaborator on the proj if the commit fails so let me know
+
+need to add remote (can google it)

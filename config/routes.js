@@ -145,7 +145,11 @@ module.exports = function(app, passport){
 
 	// Get: login request
 	app.get('/', function(req, res){
-		Post.getAll(function(error, posts){
+		// Post.getAll(function(error, posts){
+		//Going to start off with just mcgill for now
+		Post.find({location: 'McGill'})
+		.populate('comments ups downs')
+		.exec(function(error, posts){
 			if(req.isAuthenticated()){
 				//This is to make the chevron light up
 				//it probably shouldn't be here but ejs is being a pain
