@@ -136,6 +136,9 @@
               <% if (user != null) { %>
               <a onclick="vote('/post/<%=post._id%>/up', this)"><span class="glyphicon glyphicon-chevron-up <%=hasUp(post)%>"><%=post.ups.length%></span></a>
               <a onclick="vote('/post/<%=post._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down <%=hasDown(post)%>" style="margin-left:-1px;"><%=post.downs.length%></span></a>
+              <% }else{ %>
+              <span class="glyphicon glyphicon-chevron-up marker" title="Log in to vote!"><%=post.ups.length%></span>
+              <span class="glyphicon glyphicon-chevron-down marker" style="margin-left:-1px;" title="Log in to vote!"><%=post.downs.length%></span>
               <% } %>
             </div>
             <div class="pull-right" style="max-width:30px;">
@@ -249,6 +252,10 @@
         element.innerHTML = parseInt(element.innerHTML) + 1;
       }
     }
+
+    $(document).ready(function(){
+      $(".marker").tooltip({placement: 'left'});
+    });
   </script>
 
   <script>
