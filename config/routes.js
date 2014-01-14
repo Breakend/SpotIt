@@ -149,6 +149,7 @@ module.exports = function(app, passport){
 		//Going to start off with just mcgill for now
 		Post.find({location: 'McGill'})
 		.populate('comments ups downs')
+		.sort({date : -1})
 		.exec(function(error, posts){
 			if(req.isAuthenticated()){
 				//This is to make the chevron light up
