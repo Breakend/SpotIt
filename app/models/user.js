@@ -67,6 +67,7 @@ UserSchema.statics.isValidUserPassword = function(email, password, done) {
 
 UserSchema.statics.findOrCreateFaceBookUser = function(profile, done){
 	this.findOne({ 'facebook.id' : profile.id }, function(err, user){
+		console.log('facebook profile: ', profile);
 		if(err) throw err;
 		// if (err) return done(err);
 		if(user){
