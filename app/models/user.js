@@ -75,7 +75,7 @@ UserSchema.statics.findOrCreateFaceBookUser = function(profile, done){
 		}else{
 			User.create({
 				email : profile.emails[0].value,
-				profile_picture: profile.photos[0].value,
+				// profile_picture: profile.photos[0].value,
 				facebook : {
 					id:    profile.id,
 					email: profile.emails[0].value,
