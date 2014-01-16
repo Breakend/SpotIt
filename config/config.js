@@ -8,7 +8,7 @@ module.exports = {
 		facebook: {
 			clientID: "1399029103680176",
 			clientSecret: "1604e9a6d6dd3720c865975b09446f3c",
-			callbackURL: "http://agile-ridge-8948.herokuapp.com/auth/facebook/callback"
+			callbackURL: "http://agile-ridge-8948.herokuapp.com/auth/facebook/callback",
 			profileFields: ['id', 'emails', 'displayName', 'photos']
 
 		}
