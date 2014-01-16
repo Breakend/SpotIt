@@ -6,9 +6,9 @@ module.exports = {
 			name: 'Passport Authentication Tutorial'
 		},
 		facebook: {
-			clientID: "clientID",
-			clientSecret: "clientSecret",
-			callbackURL: "http://localhost:3000/auth/facebook/callback"
+			clientID: "1399029103680176",
+			clientSecret: "1604e9a6d6dd3720c865975b09446f3c",
+			callbackURL: "agile-ridge-8948.herokuapp.com"
 		}
 	},
   	production: {

@@ -8,6 +8,7 @@ UserSchema = mongoose.Schema({
 	firstName:  String,
 	lastName:   String,
 	email:      String,
+	profile_picture: String, //this is the url of the profile picture
 	salt:       String,
 	hash:       String,
 	facebook:{
@@ -65,7 +66,6 @@ UserSchema.statics.isValidUserPassword = function(email, password, done) {
 
 
 UserSchema.statics.findOrCreateFaceBookUser = function(profile, done){
-	var User = this;
 	this.findOne({ 'facebook.id' : profile.id }, function(err, user){
 		if(err) throw err;
 		// if (err) return done(err);
@@ -74,6 +74,7 @@ UserSchema.statics.findOrCreateFaceBookUser = function(profile, done){
 		}else{
 			User.create({
 				email : profile.emails[0].value,
+				profile_picture: profile.photos[0].value,
 				facebook : {
 					id:    profile.id,
 					email: profile.emails[0].value,
