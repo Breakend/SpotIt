@@ -46,10 +46,21 @@ var express = require('express'),
   path = require('path'),
   mongoose = require('mongoose'),
   passport = require("passport"),
+  FacebookStrategy = require('passport-facebook').Strategy,
   flash = require("connect-flash");
 
 var env = process.env.NODE_ENV || 'development',
   config = require('./config/config')[env];
+
+//Configure Facebook Strategy for Passport
+passport.use(new FacebookStrategy(config.facebook,
+  function(accessToken, refreshToken, profile, done) {
+    User.findOrCreateFaceBookUser(profile, function(err, user) {
+      if (err) { return done(err); }
+      done(null, user);
+    });
+  }
+));
 
 // Connect to mongodb
 mongoose.connect(config.db);
