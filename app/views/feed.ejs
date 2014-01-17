@@ -223,12 +223,15 @@
         }
 
     function connect(uid){
-      $.post('/user/' + uid + '/connect', function(data){
-        console.log('in callback');
-        bootstrap_alert.success('You\'re connection request has been sent!'); 
-      }).fail(function(){
-        console.log('failed! :(')
-        bootstrap_alert.error('There was a problem making this connection. Maybe you\'re already connected to that person?');
+      $.ajax({
+          url: '/user/' + uid + '/connect', 
+          type: 'post',
+          error: function(XMLHttpRequest, textStatus, errorThrown){
+            bootstrap_alert.error('There was a problem making this connection. Maybe you\'re already connected to that person?');
+          },
+          success: function(data){
+                    bootstrap_alert.success('Your connection request has been sent!'); 
+          }
       });
     }
      

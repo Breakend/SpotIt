@@ -20,6 +20,15 @@ ConnectionSchema.statics.addNumUnread = function(user, callback){
 	callback(user);
 }
 
+ConnectionSchema.statics.removeConnection = function(req, res){
+	//This will work, but a cleaner way would be to go through and remove from user
+	//connections, the references
+    Connection.findOne({_id: req.params.id}, function(error, connection){
+    	connection.remove();
+	    res.redirect('/connections');
+    });
+};
+
 ConnectionSchema.statics.sendMessage = function(req, res){
     Connection.findOne({_id: req.params.id}, function(error, connection){
     	User.findOne({_id: req.user._id}, function(error, usr){
@@ -92,7 +101,7 @@ ConnectionSchema.statics.requestConnection = function(req, res){
 				conn.save();
 				me.save();
 				requested.save();
-	        	res.writeHead(200, { 'Content-Type': 'application/json' });
+	        	res.writeHead(200, {});
 			}
 			else{
 	        	res.writeHead(403, 'Request already exists. Forbidden.');	
