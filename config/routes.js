@@ -120,7 +120,7 @@ module.exports = function(app, passport){
 	app.get('/posts/:location', function(req, res){
 		Post.find({location: req.params.location})
 		.populate('comments ups downs')
-		.sort{date:-1}
+		.sort({date:-1})
 		.exec(function(error, posts){
 			if(error) console.log(error);
 			console.log(posts);
