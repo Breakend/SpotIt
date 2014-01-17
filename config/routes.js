@@ -41,6 +41,7 @@ module.exports = function(app, passport){
 	app.post('/user/:id/connect', Connection.requestConnection);
 	app.post('/user/:id/connection/accept', Connection.acceptConnection);
 	app.post('/user/:id/connection/reject', Connection.rejectConnection);
+	app.post('/connection/:id/remove', Connection.removeConnection);
 	app.post('/connection/:id/message/send', Connection.sendMessage);
 	app.get('/connection/:id/messages', function(req, res){
 		if(req.isAuthenticated()){
@@ -88,7 +89,7 @@ module.exports = function(app, passport){
 		})
 	);
 
-	app.get("/auth/facebook", passport.authenticate("facebook"));
+	app.get("/auth/facebook", passport.authenticate("facebook", {scope: "email"}));
     app.get("/auth/facebook/callback", 
         passport.authenticate("facebook",{ 
         	successRedirect : "/",

@@ -55,9 +55,11 @@ var env = process.env.NODE_ENV || 'development',
 //Configure Facebook Strategy for Passport
 passport.use(new FacebookStrategy(config.facebook,
   function(accessToken, refreshToken, profile, done) {
-    User.findOrCreateFaceBookUser(profile, function(err, user) {
-      if (err) { return done(err); }
-      done(null, user);
+    process.nextTick(function() { //asynch (might be the thing causing problems)
+      User.findOrCreateFaceBookUser(profile, function(err, user) {
+        if (err) { return done(err); }
+        done(null, user);
+      });
     });
   }
 ));

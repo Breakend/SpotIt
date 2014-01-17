@@ -101,12 +101,20 @@
               <% if (!usr._id.equals(user._id)) { %>
               <div class="media">
                 <div class="pull-left" style="max-width:30px;">
+                <% if (usr.profile_picture){%>
+                  <img src=<%=usr.profile_picture%> />
+                <%};%>
                 <%=usr.firstName %> <%=usr.lastName%>
                   <%= usr.email %>
                 </div>
                   <div class="pull-right">
-                    <a href="/connection/<%=connection._id%>/messages" class="btn btn-lg" role="button"><span class="glyphicon glyphicon glyphicon-comment"></a>
+                    <a href="/connection/<%=connection._id%>/messages" class="btn btn-lg" role="button"><span class="glyphicon glyphicon-comment"></a>
                     <span class="badge"><%=connection.unread%></span>
+                  </div>  
+                  <div class="pull-right">
+                    <form action="/connection/<%=connection._id%>/remove" id="remove<%=connection._id%>" method="post">
+                    <a href="javascript:document.forms['remove<%=connection._id%>'].submit();"><span class="glyphicon glyphicon-trash"></a>
+                    </form>
                   </div>  
               </div>
               <%};%>
