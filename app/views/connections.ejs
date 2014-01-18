@@ -151,7 +151,32 @@
     <script>
      function vote(url){
       // TODO: need to add error response if user has already voted, i.e. on the server side check if user id there
-      $.post(url, {} );
+      $.ajax({
+          url: url, 
+          type: 'post',
+          error: function(XMLHttpRequest, textStatus, errorThrown){
+            bootstrap_alert.error('There was an error performing the action, maybe try again?');
+          },
+          success: function(data){
+                    bootstrap_alert.success('Your action was successful!'); 
+                    //TODO: instead of reloading, which is kind of dumb and hacky, 
+                    //do the action required
+                    $(document).load('/connections');
+          }
+      });
+
+      }
+
+        bootstrap_alert = function() {}
+    bootstrap_alert.error = function(message) {
+            $('#alert_placeholder').html('<div class="alert alert-danger fade in"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>')
+        }
+    bootstrap_alert.success = function(message) {
+            $('#alert_placeholder').html('<div class="alert alert-success fade in"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>')
+        }
+
+    function connect(uid){
+
     }
   </script>
 </body>
