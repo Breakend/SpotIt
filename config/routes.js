@@ -241,7 +241,14 @@ module.exports = function(app, passport){
   		req.logout();
   		res.redirect('/');
 	});
+}
 
+//*******************
+// EJS Filters
+//*******************
+var ejs = require('ejs')
+  , moment = require('moment');
 
-
+ejs.filters.fromNow = function(date){
+  return moment(date).fromNow();
 }

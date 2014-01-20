@@ -24,6 +24,16 @@
     .has-vote{
       color: Gold;
     }
+    .date{
+      float: right;
+      padding-left: 1em;
+      color: rgba(0,0,0,.4);
+    }
+
+    .extra.text {
+      padding: .5em 1em;
+      border-left: .2em solid rgba(0,0,0,.1);
+    }
   </style>
 
   <!-- Just for debugging purposes. Don't actually copy this line! -->
@@ -56,6 +66,7 @@
               }
           );
       }
+
       function getEmail() {
         if(user != null) { return user.email; } 
         else { return "anon"; } 
@@ -81,6 +92,7 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
+                <li><a href="/map/McGill">Map?!</a>
                 <li><a><%= getEmail() %></a></li>
                 <% if (user != null) { %>
                 <li><a href="/connections">Connections</a></li>
@@ -137,15 +149,18 @@
               <a onclick="vote('/post/<%=post._id%>/up', this)"><span class="glyphicon glyphicon-chevron-up <%=hasUp(post)%>"><%=post.ups.length%></span></a>
               <a onclick="vote('/post/<%=post._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down <%=hasDown(post)%>" style="margin-left:-1px;"><%=post.downs.length%></span></a>
               <% }else{ %>
-              <span class="glyphicon glyphicon-chevron-up marker" title="Log in to vote!"><%=post.ups.length%></span>
-              <span class="glyphicon glyphicon-chevron-down marker" style="margin-left:-1px;" title="Log in to vote!"><%=post.downs.length%></span>
+              <span class="glyphicon glyphicon-chevron-up marker_left" title="Log in to vote!"><%=post.ups.length%></span>
+              <span class="glyphicon glyphicon-chevron-down marker_left" style="margin-left:-1px;" title="Log in to vote!"><%=post.downs.length%></span>
               <% } %>
             </div>
             <div class="pull-right" style="max-width:30px;">
               <!-- TODO: it would be cool to highlight the chevron you've already voted on -->
               <% if (user != null && user._id != post.user_id) { %>
               <a onclick="connect('<%=post.user_id%>', this)"><span class="glyphicon glyphicon-link"></span></a>
+              <% } else if (user == null) {%>
+              <span class="glyphicon glyphicon-link marker_right" title="Think this post is about you? Login to connect to the poster!"></span>
               <% } %>
+
             </div>
             <a class="pull-left" href="#">
               <img class="media-object" src="/<%=post.location%>.jpg" height="60" width="49">
@@ -160,15 +175,20 @@
               </div>
 
               <% post.comments.forEach(function(comment){ %>
-              <div class="media">
+              <div class="media extra text">
                 <div class="pull-left" style="max-width:30px;">
                   <% if (user != null) { %>
                   <a onclick="vote('/comment/<%=comment._id%>/up', this)"><span class="glyphicon glyphicon-chevron-up <%=hasUp(comment)%>"><%=comment.ups.length%></span></a>
                   <a onclick="vote('/comment/<%=comment._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down <%=hasDown(comment)%>" style="margin-left:-1px;"><%=comment.downs.length%></span></a>
-                  <% } %>   
+                  <% }else{ %>
+                  <span class="glyphicon glyphicon-chevron-up marker_left" title="Log in to vote!"><%=comment.ups.length%></span>
+                  <span class="glyphicon glyphicon-chevron-down marker_left" style="margin-left:-1px;" title="Log in to vote!"><%=comment.downs.length%></span>
+                  <% } %>
                 </div>
                 <div class="media-body">
-                  <h5 class="media-heading"><%= comment.date %></h5>
+                  <h5 class="media-heading date">
+                  <%=: comment.date | fromNow%>
+                  </h5>
                   <%= comment.body %>
                 </div>
               </div>
@@ -257,7 +277,8 @@
     }
 
     $(document).ready(function(){
-      $(".marker").tooltip({placement: 'left'});
+      $(".marker_right").tooltip({placement: 'right'});
+      $(".marker_left").tooltip({placement: 'left'});
     });
   </script>
 
