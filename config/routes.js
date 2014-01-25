@@ -64,16 +64,63 @@ module.exports = function(app, passport){
 			res.redirect("/login");
 		}
 	});
-	
-	// Get: message screen
-	// app.get('/message', function(req, res){
-	// 	if(req.isAuthenticated()){
-	// 		res.render('message',{ user : req.user}); // Should render the messages for a group of users (prob just 2)
-	// 	}else{
-	// 		res.redirect("/login");
-	// 	}	
-	// });	
 
+	/*
+	 * Setup pass-reset. 
+	 * TODO: This should probably be moved to the app.js. But there were problems,
+	 * So temporarily it's here...
+	 *
+	 */
+	var passreset = require('pass-reset');
+	
+	passreset.expireTimeout(12, 'hours');
+
+	passreset.lookupUsers(function(login, callback) {
+	    User.find({ email: login }, function(err, users) {
+	        if (err) {return callback(err);}
+	        if (! users.length) {return callback(null, false);}
+	        var user = users[0];
+	        callback(null, {
+	            email: user.email,
+	            users: [{
+	                id: user.id,
+	                name: user.first_name
+	            }]
+	        });
+	    });
+	});
+
+	passreset.setPassword(User.updatePassword);
+	passreset.sendEmail(User.sendForgotPassEmail);
+	//Forgot your password
+	app.post('/password/reset',
+	        passreset.requestResetToken({
+	        	    loginParam: 'email',
+	                callbackURL: 'http://agile-ridge-8948.herokuapp.com/password/reset/{token}',
+
+	                // If this function is given you can handle errors yourself. Otherwise,
+	                // errors will be sent automatically in a JSON format
+	                error: function(err, status, req, res) {
+	                        res.send(status, err);
+	                },
+
+	                // If the "next" option is given, the action taken after successful
+	                // request can be controled. A string will be treated as a redirect URL,
+	                // and if a function is given it will be called after the request is
+	                // processed. Otherwise, a simple JSON {status: 'OK'} will be sent.
+	                next: function(req, res) {
+	                        res.send(200, 'Success!');
+	                }
+	        })
+	);
+
+	app.get('/password/reset/:token', function(req, res) {
+        res.render('reset-password.ejs', {token: req.params.token});
+	});
+
+	app.put('/password/reset',
+	        passreset.resetPassword()
+	);
 
 	// Get: login screen
 	app.get('/login', function(req, res){
