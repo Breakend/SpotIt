@@ -136,6 +136,9 @@ module.exports = function(app, passport){
 		})
 	);
 
+	/**
+	* Facebook sign in
+	*/
 	app.get("/auth/facebook", passport.authenticate("facebook", {scope: "email"}));
     app.get("/auth/facebook/callback", 
         passport.authenticate("facebook",{ 
@@ -144,6 +147,19 @@ module.exports = function(app, passport){
 			failureFlash: true
 		})
      );
+
+    /**
+    * Google signin
+    */
+    app.get('/auth/google', passport.authenticate('google',  { scope: ['https://www.googleapis.com/auth/userinfo.profile',
+                                            'https://www.googleapis.com/auth/userinfo.email'] }));
+	app.get('/auth/google/callback', 
+	  passport.authenticate('google', 
+	  	{failureRedirect: '/login' }),
+	      function(req,res){
+	      	res.redirect('/');
+	      }
+	);
 
 	// Get: signup
 	app.get("/signup", function(req, res){ 

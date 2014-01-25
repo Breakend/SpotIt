@@ -13,6 +13,7 @@
     "passport": "*",
     "passport-local": "*",
     "passport-facebook": "*",
+    "passport-google-oauth": "*",
     "mongoose": "~3.6.4",
     "connect-flash": "*",
     "geocoder": "*",
