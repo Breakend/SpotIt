@@ -13,6 +13,12 @@ UserSchema = mongoose.Schema({
 	profile_picture: String, //this is the url of the profile picture
 	salt:       String,
 	hash:       String,
+	google:{
+		id:       String,
+		email:    String,
+		name:     String,
+		profile_picture: String
+	},
 	facebook:{
 		id:       String,
 		email:    String,
@@ -130,6 +136,55 @@ UserSchema.statics.updatePassword = function(id, newPass, callback)
         });
 }
 
+UserSchema.statics.findOrCreateGoogleUser = function(profile, done){
+	console.log("profile id:" ,profile.id);
+	this.findOne({ 'google.id' : profile.id }, function(err, user){
+		console.log('google profile: ', profile);
+		if(err) throw err;
+		// if (err) return done(err);
+		if(user){
+			done(null, user);
+		}else{
+			User.findOne({'email':profile.emails[0].value}, function(err, user){
+				if(user){
+					user.google = {
+						id : profile.id,
+						email : profile.emails[0].value,
+						name : profile.displayName,
+						profile_picture: 'https://plus.google.com/s2/photos/profile/'+ profile.id+'?sz=100' //bit of a hack but nothing else works
+					}
+
+					if(!user.profile_picture){
+						user.profile_picture = user.google.profile_picture;
+					}
+
+					user.save();
+				}
+				else{
+					User.create({
+						firstName:  profile.name.givenName,
+						lastName:   profile.name.familyName,
+						email : profile.emails[0].value,
+						profile_picture: 'https://plus.google.com/s2/photos/profile/'+ profile.id+'?sz=100', //bit of a hack but nothing else works
+						google : {
+							id:    profile.id,
+							email: profile.emails[0].value,
+							name:  profile.displayName,
+							profile_picture: 'https://plus.google.com/s2/photos/profile/'+ profile.id+'?sz=100' //bit of a hack but nothing else works
+						}
+					}, function(err, user){
+						if(err) throw err;
+						// if (err) return done(err);
+						done(null, user);
+					});
+				}
+			})
+		}
+	});	
+}
+
+
+
 UserSchema.statics.findOrCreateFaceBookUser = function(profile, done){
 	this.findOne({ 'facebook.id' : profile.id }, function(err, user){
 		console.log('facebook profile: ', profile);
@@ -138,20 +193,40 @@ UserSchema.statics.findOrCreateFaceBookUser = function(profile, done){
 		if(user){
 			done(null, user);
 		}else{
-			User.create({
-				firstName:  profile.name.givenName,
-				lastName:   profile.name.familyName,
-				email : profile.emails[0].value,
-				profile_picture: 'https://graph.facebook.com/'+profile.username+'/picture', //bit of a hack but nothing else works
-				facebook : {
-					id:    profile.id,
-					email: profile.emails[0].value,
-					name:  profile.displayName
+			User.findOne({'email':profile.emails[0].value}, function(err, user){
+				if(user){
+					user.facebook = {
+						id : profile.id,
+						email : profile.emails[0].value,
+						name : profile.displayName,
+						profile_picture: 'https://graph.facebook.com/'+profile.username+'/picture', //bit of a hack but nothing else works
+					}
+
+					if(!user.profile_picture){
+						user.profile_picture = user.facebook.profile_picture;
+					}
+
+					user.save();
+					done(null, user);
 				}
-			}, function(err, user){
-				if(err) throw err;
-				// if (err) return done(err);
-				done(null, user);
+				else{
+					User.create({
+						firstName:  profile.name.givenName,
+						lastName:   profile.name.familyName,
+						email : profile.emails[0].value,
+						profile_picture: 'https://graph.facebook.com/'+profile.username+'/picture', //bit of a hack but nothing else works
+						facebook : {
+							id:    profile.id,
+							email: profile.emails[0].value,
+							name:  profile.displayName,
+							profile_picture: 'https://graph.facebook.com/'+profile.username+'/picture', //bit of a hack but nothing else works
+						}
+					}, function(err, user){
+						if(err) throw err;
+						// if (err) return done(err);
+						done(null, user);
+					});
+				}
 			});
 		}
 	});	

@@ -12,7 +12,11 @@ module.exports = {
 			profileFields: ['id', 'emails', 'displayName', 'photos']
   			// profileURL: 'https://graph.facebook.com/me?fields=id,name,email,picture'
 
-		}
+		},
+		google: {
+			clientID: "652817135577-n17k45fen7cvmlnabk72nprdt1omc91i.apps.googleusercontent.com",
+			clientSecret: "oolpu0oyu-V6Fh7kWzRydnPB",
+			callbackURL: 'http://agile-ridge-8948.herokuapp.com/auth/google/callback'		}
 	},
   	production: {
     	db: process.env.MONGOLAB_URI || process.env.MONGOHQ_URL,

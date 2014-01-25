@@ -8,23 +8,12 @@ var express = require('express'),
   mongoose = require('mongoose'),
   passport = require("passport"),
   FacebookStrategy = require('passport-facebook').Strategy,
+  GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
   flash = require("connect-flash"),
   passReset = require('pass-reset');
 
 var env = process.env.NODE_ENV || 'development',
   config = require('./config/config')[env];
-
-//Configure Facebook Strategy for Passport
-passport.use(new FacebookStrategy(config.facebook,
-  function(accessToken, refreshToken, profile, done) {
-    process.nextTick(function() { //asynch (might be the thing causing problems)
-      User.findOrCreateFaceBookUser(profile, function(err, user) {
-        if (err) { return done(err); }
-        done(null, user);
-      });
-    });
-  }
-));
 
 // Connect to mongodb
 mongoose.connect(config.db);
@@ -94,6 +83,30 @@ app.use(function(req, res, next){
   }
   res.type('txt').send('Not found');
 });
+
+var User = mongoose.model("User");
+
+//Configure Facebook Strategy for Passport
+passport.use(new FacebookStrategy(config.facebook,
+  function(accessToken, refreshToken, profile, done) {
+    process.nextTick(function() { //asynch (might be the thing causing problems)
+      User.findOrCreateFaceBookUser(profile, function(err, user) {
+        if (err) { return done(err); }
+        done(null, user);
+      });
+    });
+  }
+));
+
+passport.use(new GoogleStrategy(config.google,
+  function(accessToken, refreshToken, profile, done) {
+    process.nextTick(function() { //asynch (might be the thing causing problems)
+    User.findOrCreateGoogleUser(profile, function(err, user) {
+      done(err, user);
+    });
+  });
+  }
+));
 
 /**
 * Setup Pass Reset
