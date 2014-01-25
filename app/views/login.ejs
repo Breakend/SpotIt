@@ -201,11 +201,11 @@ ul.sm-wrap a {
 
     <div class="container">
 
-      <form class="form-signin" role="form" action='/login' method='post'>
+      <form id="login-form" class="form-signin" role="form" action='/login' method='post'>
         <h2 class="form-signin-heading">Please sign in</h2>
         <% if (err == "Incorrect email.") { %>
           <div class="form-group has-error" style="margin-bottom:0px;">
-            <input type="text" class="form-control" id="inputError" placeholder="Incorrect Email" name="email" required autofocus>
+            <input type="text" class="form-control" id="email-tf" placeholder="Incorrect Email" name="email" required autofocus>
           </div>
         <% } else { %>
           <input type="text" class="form-control" placeholder="Email address" name="email" required autofocus>
@@ -213,12 +213,13 @@ ul.sm-wrap a {
 
         <% if (err == "Incorrect password") { %>
           <div class="form-group has-error" style="margin-bottom:0px;">
-            <input type="password" class="form-control" id="inputError" placeholder="Incorrect Password" name="password" required>
+            <input type="password" class="form-control" id="password-tf" placeholder="Incorrect Password" name="password" required>
           </div>
         <% } else { %>
             <input type="password" class="form-control" placeholder="Password" name="password" required>
         <% } %>
-
+        <!-- this is preparation for forgot your password stuff... backend not working -->
+        <a href="#" id="forgot-password">I forgot my password!</a><br/>
         <a href="./signup" style="margin-bottom:10px;">Need an account?</a>
         <!-- <label class="checkbox">
           <input type="checkbox" value="remember-me"> Remember me
@@ -230,6 +231,15 @@ ul.sm-wrap a {
       </div>
     </div> <!-- /container -->
 
+    <% include modals/alert.ejs %>    
+    <% include modals/forgot-password.ejs %> 
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="/js/jquery.form.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/email-validator.js"></script>
+    <script src="/js/login.js"></script>
+    </script>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

@@ -1,42 +1,3 @@
-// // Require 
-// var express = require('express'),
-// db = require( './db' ),
-// http = require('http'),
-// path = require('path'),
-// passport = require('passport'),
-// LocalStrategy = require('passport-local').Strategy,
-// //FacebookStrategy = require('passport-facebook').Strategy,
-// app = express();
-
-// // Specify port
-// var port = 8080;
-// //var ip = "192.168.1.105";
-
-/*
-//  *	Configure the nodejs express server here
-//  *  Middlewares here 
-//  */
-// app.configure(function(){
-// 	app.set('port', port);
-// 	//app.set('port', process.env.PORT || 4040);
-// 	app.set('views', __dirname + '/app/views');
-// 	app.set('view engine', 'ejs');
-// 	//app.use(express.favicon());
-// 	//app.use(express.logger('dev'));
-// 	//app.use(express.bodyParser());
-// 	//app.use(express.methodOverride());
-// 	//app.use(express.cookieParser());
-// 	//app.use(express.session({ secret: 'PaRtY1522345'}));
-// 	app.use(express.cookieParser());
-// 	app.use(express.bodyParser());
-// 	app.use(express.session({ secret: 'SECRET' }));
-// 	app.use(passport.initialize());
-// 	app.use(passport.session());
-// 	app.use(app.router);
-//   	app.use(express.static(path.join(__dirname, 'public')));
-// });
-
-
 /**
  * Module dependencies.
  */
@@ -47,7 +8,8 @@ var express = require('express'),
   mongoose = require('mongoose'),
   passport = require("passport"),
   FacebookStrategy = require('passport-facebook').Strategy,
-  flash = require("connect-flash");
+  flash = require("connect-flash"),
+  passReset = require('pass-reset');
 
 var env = process.env.NODE_ENV || 'development',
   config = require('./config/config')[env];
@@ -133,10 +95,54 @@ app.use(function(req, res, next){
   res.type('txt').send('Not found');
 });
 
+/**
+* Setup Pass Reset
+*/
 
+var passreset  = require('pass-reset');
 
+PassResetToken = require(__dirname + '/app/models/passresettoken.js')
+function MongooseStore() {
+        // this.client = mongoose.createConnection(conf);
+        this.init.bind(this);
+}
 
+MongooseStore.prototype.init = function() {
+        // Check for expired tokens periodically and remove them
+        setInterval(function() {
+                var expired = {expires: {'$lte': new Date}};
+                PassResetToken.remove(expired).exec();
+        }.bind(this));
+};
 
+MongooseStore.prototype.create = function(id, token, callback) {
+        (PassResetToken.create({key: id, token: token}, callback));
+};
+
+MongooseStore.prototype.lookup = function(token, callback) {
+        PassResetToken.findOne({token: token}, function(err, token) {
+                if (err) {
+                        return callback(err);
+                }
+                // Not found
+                if (! token) {
+                        return callback(null, false);
+                }
+                // Expired
+                if (Date.now() > token.expired) {
+                        token.remove();
+                        return callback(null, false);
+                }
+                // Good token found
+                callback(null, token.key);
+        });
+};
+
+MongooseStore.prototype.destroy = function(token, callback) {
+        PassResetToken.remove({token: token}, callback);
+};
+
+passreset.storage.setStore(new MongooseStore());
 
 /*
  *	Declare Routes
