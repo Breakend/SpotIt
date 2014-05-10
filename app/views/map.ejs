@@ -13,12 +13,13 @@
   <!-- For the autocomplete feature of post locations -->
   <!-- <link href="/css/Autocomplete.css" rel="stylesheet"> -->
   <!-- Bootstrap core CSS -->
-  <link href="/css/bootstrap.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/bootstrap.css" >
   <link rel="stylesheet" href="/css/font-awesome.min.css">
-  <link href="/css/pure-min.css" rel="stylesheet">
-  <link href="/css/revisioned.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/pure-min.css" >
+  <link rel="stylesheet" href="/css/revisioned.css" >
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
   <link rel="stylesheet" href="/css/animate.css">
+  <link rel="stylesheet" href="/css/pure-extras.css">
 
 </head>
 
@@ -34,7 +35,7 @@
           return $string.replace(exp,function(match){
                   __imgRegex.lastIndex=0;
                   if(__imgRegex.test(match)){
-                      return '<img src="'+match+'" class="thumb" />';
+                      return '<img src="'+match+'" class="post-image" />';
                   }
                   else{
                       return '<a href="'+match+'" target="_blank">'+match+'</a>';
@@ -77,9 +78,16 @@
         <i style="padding: 5px; float:right;" class="fa fa-thumbs-up"></i>
         <i style="padding: 5px; float:right;" class="fa fa-thumbs-down"></i>
       </div>
-            <% for(var j=0; j<5; j++) {%>
-          <div class="comment hidden">Wow, that's deep.</div>
-          <% }; %>
+          <% post.comments.forEach(function(c){ %>
+          <div class="comment hidden"><%=c.body%></div>
+          <% }); %>
+          <div class="comment hidden" style="margin-left: 2px; width: 80%;">
+          <form class="add-comment-form" style="text-align: center;" action >
+          <textarea class="comment-input" style="color: black; height: 2em; width: 100%; margin-bottom: 5px;" placeholder="Add a comment!"></textarea>
+          <!-- <i class="fa fa-plus fa-lg" style="z-index: 3px;"></i> -->
+          <button type="submit" style="right: -50px;height:20%;"class="pure-button pure-button-primary">Submit</button>
+          </form>
+          </div>
       </div>
       <%});%>
     
@@ -88,10 +96,12 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
-    <script src="/js/leaflet-map.js"></script>
     <script src="/js/masonry.pkgd.min.js"></script>
+    <script src="/js/jquery.autosize.min.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/main-page.js"></script>
+    <script src="/js/leaflet-map.js"></script>
+
 
 </body>
 </html>
