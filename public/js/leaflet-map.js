@@ -1,8 +1,19 @@
 // create a map in the "map" div, set the view to a given place and zoom
-var map = L.map('map',{ zoomControl: false }).setView([
-39.905687,-75.166955], 14);
+var map;
+$(document).ready(function(){
+	if(typeof(currentLocation) === 'undefined'){
+		 map = L.map('map', {zoomControl: false}).setView([51.505, -0.09], 13);
+	} else{
+		 map = L.map('map', {zoomControl: false}).setView(currentLocation.coords, 13);
+	} 
+	// add an OpenStreetMap tile layer
+	L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg', {
+	    attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'
+	}).addTo(map);
 
-// add MapQuest tile layer, must give proper OpenStreetMap attribution according to MapQuest terms
-L.tileLayer('http://otile4.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
-attribution: '&copy; <a href="www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+})
+
+function repositionMap(){
+	map.setView(currentLocation.coords, 13);
+}
+
