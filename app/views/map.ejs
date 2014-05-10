@@ -14,49 +14,17 @@
   <!-- <link href="/css/Autocomplete.css" rel="stylesheet"> -->
   <!-- Bootstrap core CSS -->
   <link href="/css/bootstrap.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+  <link href="/css/pure-min.css" rel="stylesheet">
+  <link href="/css/revisioned.css" rel="stylesheet">
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+  <link rel="stylesheet" href="/css/animate.css">
 
-  <!-- Custom styles for this template -->
-  <style>
-    .main-container {
-      min-width:1350px;
-      min-height: 2000px;
-      padding-top: 20px;
-    }
-    .has-vote{
-      color: Gold;
-    }
-    .right-container {
-      /*width:57%;*/
-      max-width:750px;
-      min-width:750px;
-      float:right;
-      margin-left:1%;
-      margin-right:2%;
-    }
-    #map-canvas {
-      width:37%;
-      min-height:800px;
-      float:left;
-      margin-left:2%;
-      margin-right:1%;
-    }
-  </style>
+</head>
 
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<body>
 
-  <!-- Just for debugging purposes. Don't actually copy this line! -->
-  <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-      <![endif]-->
-    </head>
-
-    <body>
-
-      <%
+    <%
       var __urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
       var __imgRegex = /\.(?:jpe?g|gif|png)$/i;
 
@@ -74,235 +42,56 @@
               }
           );
       }
-      function getEmail() {
-        if(user != null) { return user.email; } 
-        else { return "anon"; } 
-        }
+    %>
 
-      function hasUp(post){
-        if(post.hasUp) return "has-vote"
-        return "";
-      }
+    <div class="home-menu pure-menu pure-menu-open pure-menu-horizontal pure-menu-fixed">
+        <a class="pure-menu-heading" href="">Spotted</a>
 
-      function hasDown(post){
-        if(post.hasDown) return "has-vote"
-        return "";
-      }  
-        %>  
+        <ul>
+            <li class="pure-menu-selected"><a href="#">Home</a></li>
+            <li><a href="#">Sign In</a></li>
+        </ul>
+    </div>
 
-        <div class="main-container">
-          <div id="map-canvas"></div>
-          
-          <div class="right-container" style="">
+    <div class="map-container">
+    <div id="map"></div>
+    </div>
 
-            <!-- Static navbar -->
-            <div class="navbar navbar-default" role="navigation">
-              <div class="navbar-header">
-                <a class="navbar-brand" href="/">The Feed</a>
-              </div>
-              <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                  <li><a><%= getEmail() %></a></li>
-                  <% if (user != null) { %>
-                  <li><a href="/connections">Connections</a></li>
-                  <% } %>
-                  <li>
-                    <% if (user != null) { %>
-                    <a href="/logout">Logout</a>
-                    <% } else { %>
-                    <a href="/login">Login</a>
-                    <% } %>
-                  </li>
-                </ul>
-                <ul class="nav navbar-nav">
-                <li class="dropdown">
-                  <a href="#" id="location"
-                        class="dropdown-toggle"
-                        data-toggle="dropdown">
-                        <%=location%>
-                        <b class="caret"></b>
-                  </a>
-                  <ul class="dropdown-menu">
-                   <li><a href="/posts/McGill">McGill</a></li>
-                   <li><a href="/posts/Concordia">Concordia</a></li>
-                  </ul>
-                </li>
-                <li class="dropdown">
-                  <a href="#" id="location"
-                        class="dropdown-toggle"
-                        data-toggle="dropdown">
-                        Loc
-                        <b class="caret"></b>
-                  </a>
-                  <ul class="dropdown-menu">
-                   <li><a href="#McGill">McGill</a></li>
-                   <li><a href="#Trottier">Trottier</a></li>
-                   <li><a href="#Redpath">Redpath</a></li>
-                  </ul>
-                </li>
-              </ul>
-              </div><!--/.nav-collapse -->
-            </div>
-            <div id = "alert_placeholder"></div>
+    <div id="r-container" class="right-container js-masonry" data-masonry-options='{ "itemSelector": ".item" }'>
+    <% posts.forEach( function( post ){ %>
 
-            <% if (user != null) { %>
-            <form id="postform" action="/post/new" method="post" accept-charset="utf-8">
-    <!--          <%if(location){%> -->
-                <input type="hidden" name="location" value="<%=location%>">
-  <!--             <%}else{%>
-                <input type="hidden" name="location" value="McGill"> default for now, later should maybe just do an intro select page?
-              <%};%> -->
-              <textarea class="form-control" rows="3" name="body" placeholder="Post to spotted"></textarea>
-              <div class="input-group input-group-sm" style="margin-top:5px">
-                <input type="text" class="form-control" id="sublocation" name="sublocation" placeholder="Where are you?">
-                <span class="input-group-btn">
-                  <button class="btn btn-default" type="submit" value="Send">Post</button>
-                </span>
-              </div><!-- /input-group -->
-            </form>
-            <% } %>
-
-
-            <% posts.forEach( function( post ){ %>
-            <div class="media">
-              <div class="pull-left" style="max-width:30px;">
-                <!-- TODO: it would be cool to highlight the chevron you've already voted on -->
-                <% if (user != null) { %>
-                <a onclick="vote('/post/<%=post._id%>/up', this)"><span class="glyphicon glyphicon-chevron-up <%=hasUp(post)%>"><%=post.ups.length%></span></a>
-                <a onclick="vote('/post/<%=post._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down <%=hasDown(post)%>" style="margin-left:-1px;"><%=post.downs.length%></span></a>
-                <% }else{ %>
-                <span class="glyphicon glyphicon-chevron-up marker" title="Log in to vote!"><%=post.ups.length%></span>
-                <span class="glyphicon glyphicon-chevron-down marker" style="margin-left:-1px;" title="Log in to vote!"><%=post.downs.length%></span>
-                <% } %>
-              </div>
-              <div class="pull-right" style="max-width:30px;">
-                <!-- TODO: it would be cool to highlight the chevron you've already voted on -->
-                <% if (user != null && user._id != post.user_id) { %>
-                <a onclick="connect('<%=post.user_id%>', this)"><span class="glyphicon glyphicon-link"></span></a>
-                <% } %>
-              </div>
-              <a class="pull-left" href="#">
-                <img class="media-object" src="/<%=post.location%>.jpg" height="60" width="49">
-              </a>
-              <div class="media-body">
-                
-                <div class="media">
-                  <div class="pull-left" style="width:80%; margin-right:0px;">
-                    <h4 class="media-heading"><%= post.location %>: <%= post.sublocation %></h4>
-                    <div style="min-height:20px;"><%- parseURL(post.body) %></div>
-                  </div>
-                </div>
-
-                <% post.comments.forEach(function(comment){ %>
-                <div class="media">
-                  <div class="pull-left" style="max-width:30px;">
-                    <% if (user != null) { %>
-                    <a onclick="vote('/comment/<%=comment._id%>/up', this)"><span class="glyphicon glyphicon-chevron-up <%=hasUp(comment)%>"><%=comment.ups.length%></span></a>
-                    <a onclick="vote('/comment/<%=comment._id%>/down', this)"><span class="glyphicon glyphicon-chevron-down <%=hasDown(comment)%>" style="margin-left:-1px;"><%=comment.downs.length%></span></a>
-                    <% } %>   
-                  </div>
-                  <div class="media-body">
-                    <h5 class="media-heading"><%= comment.date %></h5>
-                    <%= comment.body %>
-                  </div>
-                </div>
-                <% }); %>
-
-                <% if (user != null) { %>
-                <form id ="addcomment" action="/post/<%=post._id%>/comment" method="post">
-                  <div class="input-group input-group-sm" style="margin-top:10px">
-                    <input type="text" class="form-control"  name="body" placeholder="Comment">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="submit" value="Send">Post</button>
-                    </span>
-                  </div><!-- /input-group -->
-                </form>  
-                <% } %>
-              </div>
-            </div>  
-            <% }); %>  
-
-          </div> <!-- /container -->
+    <div class="gen-post-wrapper item" style="display: inline-block;">
+      <div class="post-wrapper">
+        
+        <div class="post" style="position:relative;">
+          <div class="post-content"><%- parseURL(post.body) %></div>
         </div>
+        <div class="count-container">
+          150<i style="padding: 2px; float:left;" class="fa fa-heart"></i><br/>
+          150<i style="padding: 2px; float:left; font-weight:bold;" class="fa fa-frown-o"></i><br/>
+         </div>
+        <!-- <i style="padding: 5px; float:right;" class="fa fa-plus"></i> use this for adding a comment-->
+        <i style="padding: 5px; float:left;" class="fa fa-coffee"></i>
+        <span style="float:right; padding: 2px;"> 125</span>
+        <i style="padding: 5px; float:right;" class="expand-comments fa fa-comments"></i>
+        <i style="padding: 5px; float:right;" class="fa fa-thumbs-up"></i>
+        <i style="padding: 5px; float:right;" class="fa fa-thumbs-down"></i>
+      </div>
+            <% for(var j=0; j<5; j++) {%>
+          <div class="comment hidden">Wow, that's deep.</div>
+          <% }; %>
+      </div>
+      <%});%>
+    
+    </div>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+    <script src="/js/leaflet-map.js"></script>
+    <script src="/js/masonry.pkgd.min.js"></script>
     <script src="/js/bootstrap.js"></script>
-    <script src="/js/Autocomplete.js"></script>
-    <script src="/js/googlemap.js"></script>
-    <script>
-    //Init autocomplete on posts
-    (function(window, document, undefined) {
-        "use strict";
-        var myAutocomplete = new Autocomplete("sublocation", {
-          srcType : "array",
-          srcData : ["McConnell Engineering", "McLennan", "Law Library", "Trottier", "Arts Building", "Leacock", "Education Building", "Schulich Library", "McMed", "Stewart Bio", "General"]
-      //hardcoding this to mcgill for now, but need to somehow keep track of this list, maybe through a LocationSchema?
-          });
-    })(this, this.document);     
+    <script src="/js/main-page.js"></script>
 
-    function hasClass(element, cls) {
-      return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
-    }
-
-    bootstrap_alert = function() {}
-    bootstrap_alert.error = function(message) {
-            $('#alert_placeholder').html('<div class="alert alert-danger fade in"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>')
-        }
-    bootstrap_alert.success = function(message) {
-            $('#alert_placeholder').html('<div class="alert alert-success fade in"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>')
-        }
-
-    function connect(uid){
-      $.post('/user/' + uid + '/connect', function(data){
-        console.log('in callback');
-        bootstrap_alert.success('You\'re connection request has been sent!'); 
-      }).fail(function(){
-        console.log('failed! :(')
-        bootstrap_alert.error('There was a problem making this connection. Maybe you\'re already connected to that person?');
-      });
-    }
-     
-     function vote(url){
-      var element = event.target;
-      // TODO: need to add error response if user has already voted, i.e. on the server side check if user id there
-      $.post(url, {} );
-      if (hasClass(element, 'has-vote')){
-        $(element).removeClass('has-vote');
-        element.innerHTML = parseInt(element.innerHTML) - 1;
-      }
-      else{
-        var children = element.parentNode.parentNode.children;
-        for(i=0;i<children.length;i++){
-          if(hasClass(children[i].children[0], 'has-vote')){
-            $(children[i].children[0]).removeClass('has-vote');
-            children[i].children[0].innerHTML = parseInt(children[i].children[0].innerHTML) - 1;
-          }
-        };
-        $(element).addClass('has-vote');
-        element.innerHTML = parseInt(element.innerHTML) + 1;
-      }
-    }
-
-    $(document).ready(function(){
-      $(".marker").tooltip({placement: 'left'});
-    });
-  </script>
-
-  <script>
-  // analytics
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-47038636-1', 'agile-ridge-8948.herokuapp.com');
-  ga('send', 'pageview');
-
-</script>
 </body>
 </html>
