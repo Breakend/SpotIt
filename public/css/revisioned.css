@@ -1,0 +1,178 @@
+body, html {border: 0px; margin: 0px; padding: 0px; 
+height:100%; position:relative; width:100%;}
+
+img{  
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*-webkit-transform: translate(-50%, -50%);*/
+    /*-moz-transform: translate(-50%, -50%);*/
+    /*-ms-transform: translate(-50%, -50%);*/
+    /*-o-transform: translate(-50%, -50%);*/
+    /*transform: translate(-50%, -50%);*/
+    margin: 2px;
+    max-width: 70%
+
+}
+
+@media screen and (orientation: portrait) {
+  img { max-width: 90%; }
+}
+
+@media screen and (orientation: landscape) {
+  img { max-height: 90%; }
+}
+
+/*
+ * -- MENU STYLES --
+ * I want to customize how my .pure-menu looks at the top of the page
+ */
+
+
+.home-menu {
+    padding: 0.5em;
+    text-align: center;
+    box-shadow: 0 1px 1px rgba(0,0,0, 0.10);
+}
+.home-menu.pure-menu-open {
+    background: #2d3e50;
+}
+.pure-menu.pure-menu-open.pure-menu-fixed {
+    /* Fixed menus normally have a border at the bottom. */
+    border-bottom: none;
+    /* I need a higher z-index here because of the scroll-over effect. */
+    /*z-index: 4;*/
+}
+
+.home-menu .pure-menu-heading {
+    color: white;
+    font-weight: 400;
+    font-size: 120%;
+}
+
+.home-menu .pure-menu-selected a {
+    color: white;
+}
+
+.home-menu a {
+    color: #6FBEF3;
+}
+.home-menu li a:hover,
+.home-menu li a:focus {
+    background: none;
+    border: none;
+    color: #AECFE5;
+}
+
+/**
+*
+* Container styles
+*
+*/
+.right-container{
+    top: 0;
+    bottom:0;
+    width: 55%;
+    left: 45%;
+    top: 48px;
+}
+
+
+
+.comment{
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    border: 3px solid #811919;
+    font-weight: 100;
+    background-color: #811919;
+    border-radius: 5px;
+    line-height: 1em;
+    padding: .5em .6em;  
+    bottom: -30px;
+    position: relative;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.post{
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    border: 3px solid #1f8dd6;
+    font-weight: 100;
+    background-color: #1f8dd6;
+    width: 22vw;
+    border-radius: 5px;
+    line-height: 1em;
+    padding: .5em .6em;
+    display:block;
+}
+
+.expand-comments:hover{
+    cursor: pointer;
+}
+
+.gen-post-wrapper{
+    position: relative;
+    display: inline-block;
+    float: left;
+    margin: 15px;
+    margin-right: 55px;
+}
+
+.count-container{
+    position: absolute;
+    display: inline-block;
+    /*right: -300px;*/
+    bottom: 20px;
+    right: -40px;
+    /*float:right;*/
+    font-size: 12px;
+    font-weight:bold;
+}
+
+
+/* This is the main heading that appears on the blue section */
+.splash-head {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    border: 3px solid white;
+    padding: 1em 1.6em;
+    font-weight: 100;
+    border-radius: 5px;
+    line-height: 1em;
+}
+
+/* This is the subheading that appears on the blue section */
+.splash-subhead {
+    color: white;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+}
+
+/**
+* Functors
+*/
+
+.hidden{
+    display: none;
+}
+
+/**
+*
+* Map styles
+*/
+
+.leaflet-control-zoom-in{
+    bottom: 20%;
+}
+
+#map{
+    left: 1px;
+    height: 100%;
+    position: fixed;
+    width: 45%;
+    background: none;
+    /*top: 50px;*/
+}
