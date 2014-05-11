@@ -82,10 +82,10 @@
           <div class="comment hidden"><%=c.body%></div>
           <% }); %>
           <div class="comment hidden" style="margin-left: 2px; width: 80%;">
-          <form class="add-comment-form" style="text-align: center;" action >
-          <textarea class="comment-input" style="color: black; height: 2em; width: 100%; margin-bottom: 5px;" placeholder="Add a comment!"></textarea>
+          <form class="add-comment-form" style="text-align: center;" action="/post/<%=post._id%>/comment" method="post" >
+          <textarea name="body" class="comment-input" style="color: black; height: 2em; width: 100%; margin-bottom: 5px;" placeholder="Add a comment!"></textarea>
           <!-- <i class="fa fa-plus fa-lg" style="z-index: 3px;"></i> -->
-          <button type="submit" style="right: -50px;height:20%;"class="pure-button pure-button-primary">Submit</button>
+          <button type="submit" style="font-weight: 200; right: -50px;height:20%;"class="pure-button">Submit</button>
           </form>
           </div>
       </div>
