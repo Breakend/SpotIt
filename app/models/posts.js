@@ -24,6 +24,24 @@ PostSchema.statics.comment = function(req, res){
     date : new Date(),
     body : req.body.body
   });
+  if(req.body.postlon && req.body.postlat){
+    comment.coords = [req.body.lat, req.body.lon]; 
+  }
+  comment.save();
+  console.log(req.params.id);
+ Post.findOne({_id: req.params.id}, function(error, post) {
+    post.comments.push(comment);
+    post.save();
+    res.redirect('/');
+  });
+};
+
+PostSchema.statics.anonComment = function(req, res){
+  var comment  = new Comment({
+    user_id : 1234567890,
+    date : new Date(),
+    body : req.body.body
+  });
   comment.save();
   console.log(req.params.id);
  Post.findOne({_id: req.params.id}, function(error, post) {
@@ -144,18 +162,113 @@ PostSchema.statics.createPost = function ( req, res ){
   }
 };
 
-var geocoder = require('geocoder');
-function geocode(address, callback) {
-  if(typeof address != 'undefined' && address !== null) {
-    geocoder.geocode( address, function( err , data) {
-      console.log(err);
-      console.log(data);
-      if(err){ callback([-45, 70]); return;}
-      var coords = [data.results[0].geometry.location.lng, data.results[0].geometry.location.lat];
-      callback(coords);
+PostSchema.statics.anonPost = function(req, res){
+  if(req.body.lat && req.body.lon){
+    //This is if it gets the location automatically, otherwise gets it from the address bar
+    Post.create({
+      user_id: 1234567890,
+      location: "McGill",
+      sublocation: req.body.sublocation,
+      body: req.body.body,
+      coords: [req.body.lat, req.body.lon],
+      date : new Date()
+    },
+      function(err, post){
+      //Should show error page
+      if (err) console.log("Error when saving party: ", err);
+      console.log(post);
+      res.redirect('/');
+    });
+  }
+  else{
+     Post.create({
+      user_id: 1234567890,
+      location: "McGill",
+      sublocation: req.body.sublocation,
+      body: req.body.body,
+      date : new Date()
+    },
+      function(err, post){
+      //Should show error page
+      if (err) console.log("Error when saving party: ", err);
+      console.log(post);
+      res.redirect('/');
     });
   }
 }
+
+PostSchema.statics.createPost = function ( req, res ){
+  console.log("User", req.body.user);
+  console.log("request: ", req);
+  console.log("In post create");
+  //TODO: Figure our video and pix posting
+  if(req.body.lat && req.body.lon){
+    //This is if it gets the location automatically, otherwise gets it from the address bar
+    Post.create({
+      user_id: req.user._id,
+      location: req.body.location,
+      sublocation: req.body.sublocation,
+      body: req.body.body,
+      coords: [req.body.lat, req.body.lon],
+      date : new Date()
+    },
+      function(err, post){
+      //Should show error page
+      if (err) console.log("Error when saving party: ", err);
+      console.log(post);
+      res.redirect('/');
+    });
+  }
+  else{
+     Post.create({
+      user_id: req.user._id,
+      location: req.body.location,
+      sublocation: req.body.sublocation,
+      body: req.body.body,
+      date : new Date()
+    },
+      function(err, post){
+      //Should show error page
+      if (err) console.log("Error when saving party: ", err);
+      console.log(post);
+      res.redirect('/');
+    });
+  }
+  // else{
+  //   //Don't know if we really need the geostuff, but leaving it in for now
+  //   geocode(req.body.location, function(results){
+  //     console.log("In geocode callback");
+  //     Post.create({
+  //       user_id: req.user._id,
+  //       location: req.body.location,
+  //       sublocation: req.body.sublocation,
+  //       body: req.body.body,
+  //       coords: results,
+  //       date : new Date()
+  //     },
+  //       function(err, post){
+  //       //Should show error page
+  //       if (err) console.log("Error when saving party: ", err);
+  //       console.log("post created");
+  //       console.log(post);
+  //       res.redirect('/');
+  //     });
+  //   });
+  // }
+};
+
+// var geocoder = require('geocoder');
+// function geocode(address, callback) {
+//   if(typeof address != 'undefined' && address !== null) {
+//     geocoder.geocode( address, function( err , data) {
+//       console.log(err);
+//       console.log(data);
+//       if(err){ callback([-45, 70]); return;}
+//       var coords = [data.results[0].geometry.location.lng, data.results[0].geometry.location.lat];
+//       callback(coords);
+//     });
+//   }
+// }
 
 var User      = mongoose.model( 'User' );
 var Post      = mongoose.model('Post', PostSchema);

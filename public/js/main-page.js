@@ -12,6 +12,8 @@ function removeElement(element){
 	$(element).parents().first().remove();
 }
 
+
+
 $(document).ready(function(){
 
 /*
@@ -41,5 +43,10 @@ $(document).on("click", ".expand-comments", function(e){
     	});
    	}
 });
+
+$(document).on('click', '#display-post-form-button', function(event){
+	var form = $(this).parents().first().children(".add-post-form");
+	$(form).slideToggle();
+})
 
 });

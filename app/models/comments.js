@@ -8,6 +8,7 @@ var CommentSchema = new mongoose.Schema({
   body      : String,
   img_url   : String,
   vid_url   : String,
+  coords    : [Number, Number],
   ups       : [{ type: Schema.Types.ObjectId, ref: 'User'}],
   downs     : [{ type: Schema.Types.ObjectId, ref: 'User'}]
 });
