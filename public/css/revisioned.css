@@ -65,7 +65,6 @@ textarea{
 */
 .right-container{
     top: 0;
-    bottom:0;
     width: 55%;
     left: 45%;
     top: 48px;
@@ -85,6 +84,11 @@ textarea{
 
 .comment{
     font-size: 12px;
+    word-break:break-all;
+    word-wrap: break-word;
+    hyphens: auto;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
     font-weight: bold;
     color: white;
     border: 3px solid #811919;
@@ -104,6 +108,11 @@ textarea{
 .post{
     font-size: 15px;
     font-weight: bold;
+    word-break:break-all;
+    word-wrap: break-word;
+    hyphens: auto;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
     color: white;
     border: 3px solid #1f8dd6;
     font-weight: 100;
@@ -113,6 +122,19 @@ textarea{
     line-height: 1em;
     padding: .5em .6em;
     display:block;
+}
+
+.add-post-form{
+    margin: 15px;
+    text-align: center;
+}
+
+.post-form-container{
+    background-color: #e9eaed; 
+    width:55%; 
+    bottom:0px; 
+    right:0px; 
+    position:fixed;
 }
 
 .expand-comments:hover{
@@ -125,6 +147,7 @@ textarea{
     float: left;
     margin: 15px;
     margin-right: 55px;
+    max-width: 40%;
 }
 
 .count-container{

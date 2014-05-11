@@ -25,52 +25,52 @@
 
 <body>
 
-    <%
-      var __urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-      var __imgRegex = /\.(?:jpe?g|gif|png)$/i;
+  <%
+  var __urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+  var __imgRegex = /\.(?:jpe?g|gif|png)$/i;
 
-      function parseURL($string){
+  function parseURL($string){
 
-          var exp = __urlRegex;
-          return $string.replace(exp,function(match){
-                  __imgRegex.lastIndex=0;
-                  if(__imgRegex.test(match)){
-                      return '<img src="'+match+'" class="post-image" />';
-                  }
-                  else{
-                      return '<a href="'+match+'" target="_blank">'+match+'</a>';
-                  }
-              }
-          );
+    var exp = __urlRegex;
+    return $string.replace(exp,function(match){
+      __imgRegex.lastIndex=0;
+      if(__imgRegex.test(match)){
+        return '<img src="'+match+'" class="post-image" />';
       }
-    %>
+    else{
+      return '<a href="'+match+'" target="_blank">'+match+'</a>';
+    }
+  }
+  );
+  }
+  %>
 
-    <div class="home-menu pure-menu pure-menu-open pure-menu-horizontal pure-menu-fixed">
-        <a class="pure-menu-heading" href="">Spotted</a>
+  <div class="home-menu pure-menu pure-menu-open pure-menu-horizontal pure-menu-fixed">
+    <a class="pure-menu-heading" href="">Spotted</a>
 
-        <ul>
-            <li class="pure-menu-selected"><a href="#">Home</a></li>
-            <li><a href="#">Sign In</a></li>
-        </ul>
-    </div>
+    <ul>
+      <li class="pure-menu-selected"><a href="#">Home</a></li>
+      <li><a href="#">Sign In</a></li>
+    </ul>
+  </div>
 
-    <div class="map-container">
+  <div class="map-container">
     <div id="map"></div>
-    </div>
+  </div>
 
-    <div id="r-container" class="right-container js-masonry" data-masonry-options='{ "itemSelector": ".item" }'>
+  <div id="r-container" class="right-container js-masonry" data-masonry-options='{ "itemSelector": ".item" }'>
     <% posts.forEach( function( post ){ %>
 
     <div class="gen-post-wrapper item" style="display: inline-block;">
       <div class="post-wrapper">
-        
-        <div class="post" style="position:relative;">
+
+        <div class="post" <% if(post.coords.length > 0){ %> longitude="<%=post.coords[0]%>" latitude="<%=post.coords[1]%>" <%}%> style="position:relative;">
           <div class="post-content"><%- parseURL(post.body) %></div>
         </div>
         <div class="count-container">
           150<i style="padding: 2px; float:left;" class="fa fa-heart"></i><br/>
           150<i style="padding: 2px; float:left; font-weight:bold;" class="fa fa-frown-o"></i><br/>
-         </div>
+        </div>
         <!-- <i style="padding: 5px; float:right;" class="fa fa-plus"></i> use this for adding a comment-->
         <i style="padding: 5px; float:left;" class="fa fa-coffee"></i>
         <span style="float:right; padding: 2px;"> 125</span>
@@ -78,29 +78,42 @@
         <i style="padding: 5px; float:right;" class="fa fa-thumbs-up"></i>
         <i style="padding: 5px; float:right;" class="fa fa-thumbs-down"></i>
       </div>
-          <% post.comments.forEach(function(c){ %>
-          <div class="comment hidden"><%=c.body%></div>
-          <% }); %>
-          <div class="comment hidden" style="margin-left: 2px; width: 80%;">
-          <form class="add-comment-form" style="text-align: center;" action="/post/<%=post._id%>/comment" method="post" >
+      <% post.comments.forEach(function(c){ %>
+      <div class="comment hidden"><%=c.body%></div>
+      <% }); %>
+      <div class="comment hidden" style="margin-left: 2px; width: 80%;">
+        <form class="add-comment-form" style="text-align: center;" action="/post/<%=post._id%>/comment/anonymous" method="post" >
+          <input type="hidden" name="lat" class="lat"></input>
+          <input type="hidden" name="lon" class="lon"></input>
           <textarea name="body" class="comment-input" style="color: black; height: 2em; width: 100%; margin-bottom: 5px;" placeholder="Add a comment!"></textarea>
           <!-- <i class="fa fa-plus fa-lg" style="z-index: 3px;"></i> -->
           <button type="submit" style="font-weight: 200; right: -50px;height:20%;"class="pure-button">Submit</button>
-          </form>
-          </div>
+        </form>
       </div>
-      <%});%>
+    </div>
+    <%});%>
     
+  </div>
+
+    <div class="post-form-container">
+      <button id="display-post-form-button" class="pure-button pure-button-primary" style="background: rgb(202, 60, 60); width:100%">Add a post!</button>
+      <form class="add-post-form" style="display:none;" action="/post/new/anonymous" method="post">
+        <input type="hidden" name="lat" class="lat"></input>
+        <input type="hidden" name="lon" class="lon"></input>
+        <textarea style="width:75%;" id="post-input" name="body" placeholder="What you wanna say? For pictures just paste a link wherever and it will load as an image in the post."></textarea>
+        <br/>
+        <button style="margin-top: 16px; margin-bottom: 3px; width: 50%" class="pure-button pure-button-primary">Submit!</button> 
+      </form>
     </div>
 
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
-    <script src="/js/masonry.pkgd.min.js"></script>
-    <script src="/js/jquery.autosize.min.js"></script>
-    <script src="/js/bootstrap.js"></script>
-    <script src="/js/main-page.js"></script>
-    <script src="/js/leaflet-map.js"></script>
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+  <script src="/js/masonry.pkgd.min.js"></script>
+  <script src="/js/jquery.autosize.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <script src="/js/main-page.js"></script>
+  <script src="/js/leaflet-map.js"></script>
 
 
 </body>
