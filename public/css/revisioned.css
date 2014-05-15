@@ -38,6 +38,12 @@ textarea{
     /*z-index: 4;*/
 }
 
+.selected-shadow{
+    -webkit-box-shadow: 9px 10px 12px 0px rgba(52, 86, 137, 0.55);
+    -moz-box-shadow:    9px 10px 12px 0px rgba(52, 86, 137, 0.55);
+    box-shadow:         9px 10px 12px 0px rgba(52, 86, 137, 0.55);
+}
+
 .home-menu .pure-menu-heading {
     color: white;
     font-weight: 400;
@@ -57,6 +63,30 @@ textarea{
     border: none;
     color: #AECFE5;
 }
+
+#progress {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    left: 400px;
+    top: 300px;
+    width: 200px;
+    height: 20px;
+    margin-top: -20px;
+    margin-left: -100px;
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+#progress-bar {
+    width: 0;
+    height: 100%;
+    background-color: #76A6FC;
+    border-radius: 4px;
+}
+
 
 /**
 *
@@ -113,6 +143,9 @@ textarea{
     hyphens: auto;
     -ms-hyphens: auto;
     -moz-hyphens: auto;
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
     color: white;
     border: 3px solid #1f8dd6;
     font-weight: 100;
