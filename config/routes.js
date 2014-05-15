@@ -21,6 +21,10 @@ module.exports = function(app, passport){
 	app.post('/post/:id/up', Post.upvote);
 	app.post('/comment/:id/up', Comment.upvote);
 	app.post('/comment/:id/down', Comment.downvote);
+	app.post('/post/:id/down/anonymous', Post.anondownvote);
+	app.post('/post/:id/up/anonymous', Post.anonupvote);
+	// app.post('/comment/:id/up/anonymous', Comment.anonupvote);
+	// app.post('/comment/:id/down/anonymous', Comment.anondownvote);
 
 	app.get('/connections', function(req, res){
 		if(req.isAuthenticated()){

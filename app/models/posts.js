@@ -82,6 +82,69 @@ PostSchema.statics.upvote = function(req, res){
  })
 };
 
+
+PostSchema.statics.anonupvote = function(req, res){
+ Post.findOne({_id: req.params.id}, function(error, post) {
+    // User.findOne({_id: req.user._id}, function(error, user){
+
+
+      // if (post.ups.indexOf(user._id) < 0){
+        post.ups.push(1234567890);
+        //if in the downs, remove from downs and put in the ups
+        // var index = post.downs.indexOf(user._id);
+        // if (index > -1) {
+          // post.downs.splice(index, 1);
+        // }
+        post.save();
+      // } else{
+        //Want to unvote...
+        // var index = post.ups.indexOf(user._id);
+        // if (index > -1) {
+          // post.ups.splice(index, 1);
+        // }
+        // post.save();
+
+      // }
+
+      //TODO: error handling
+      res.redirect('/');
+      // res.writeHead(200, { 'Content-Type': 'application/json' });
+      // res.end();
+    // })
+ })
+};
+
+PostSchema.statics.anondownvote = function(req, res){
+ Post.findOne({_id: req.params.id}, function(error, post) {
+    // User.findOne({_id: req.user._id}, function(error, user){
+
+
+      // if (post.ups.indexOf(user._id) < 0){
+        post.downs.push(1234567890);
+        //if in the downs, remove from downs and put in the ups
+        // var index = post.downs.indexOf(user._id);
+        // if (index > -1) {
+          // post.downs.splice(index, 1);
+        // }
+        post.save();
+      // } else{
+        //Want to unvote...
+        // var index = post.ups.indexOf(user._id);
+        // if (index > -1) {
+          // post.ups.splice(index, 1);
+        // }
+        // post.save();
+
+      // }
+
+      //TODO: error handling
+      res.redirect('/');
+      // res.writeHead(200, { 'Content-Type': 'application/json' });
+      // res.end();
+    // })
+ })
+};
+
 PostSchema.statics.downvote = function(req, res){
  Post.findOne({_id: req.params.id}, function(error, post) {
     User.findOne({_id: req.user._id}, function(error, user){

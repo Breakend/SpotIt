@@ -20,6 +20,8 @@
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
   <link rel="stylesheet" href="/css/animate.css">
   <link rel="stylesheet" href="/css/pure-extras.css">
+  <link rel="stylesheet" href="/css/MarkerCluster.css">
+  <link rel="stylesheet" href="/css/MarkerCluster.Default.css">
 
 </head>
 
@@ -55,6 +57,9 @@
   </div>
 
   <div class="map-container">
+    <div id="progress" style="display:none;">
+    <div id="progress-bar"></div>
+    </div>
     <div id="map"></div>
   </div>
 
@@ -64,16 +69,16 @@
     <div class="gen-post-wrapper item" style="display: inline-block;">
       <div class="post-wrapper">
 
-        <div class="post" <% if(post.coords.length > 0){ %> longitude="<%=post.coords[0]%>" latitude="<%=post.coords[1]%>" <%}%> style="position:relative;">
+        <div id="<%= post._id %>" class="post" <% if(post.coords.length > 0){ %> longitude="<%=post.coords[0]%>" latitude="<%=post.coords[1]%>" <%}%> style="position:relative;">
           <div class="post-content"><%- parseURL(post.body) %></div>
         </div>
         <div class="count-container">
-          150<i style="padding: 2px; float:left;" class="fa fa-heart"></i><br/>
-          150<i style="padding: 2px; float:left; font-weight:bold;" class="fa fa-frown-o"></i><br/>
+          <%= post.ups.length %><i style="padding: 2px; float:left;" class="fa fa-heart"></i><br/>
+          <%= post.downs.length %><i style="padding: 2px; float:left; font-weight:bold;" class="fa fa-frown-o"></i><br/>
         </div>
         <!-- <i style="padding: 5px; float:right;" class="fa fa-plus"></i> use this for adding a comment-->
         <i style="padding: 5px; float:left;" class="fa fa-coffee"></i>
-        <span style="float:right; padding: 2px;"> 125</span>
+        <span style="float:right; padding: 2px;"> <%= post.comments.length %></span>
         <i style="padding: 5px; float:right;" class="expand-comments fa fa-comments"></i>
         <i style="padding: 5px; float:right;" class="fa fa-thumbs-up"></i>
         <i style="padding: 5px; float:right;" class="fa fa-thumbs-down"></i>
@@ -114,7 +119,7 @@
   <script src="/js/bootstrap.js"></script>
   <script src="/js/main-page.js"></script>
   <script src="/js/leaflet-map.js"></script>
-
+  <script src="/js/leaflet.markercluster.js"></script>
 
 </body>
 </html>
