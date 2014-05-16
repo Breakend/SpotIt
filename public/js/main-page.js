@@ -12,9 +12,15 @@ function removeElement(element){
 	$(element).parents().first().remove();
 }
 
+function submitForm(id){
+	$("#" + id).submit();
+}
 
 
 $(document).ready(function(){
+
+$('.tooltip-ready').tooltip()
+
 
 /*
 * Event Bindings

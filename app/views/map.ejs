@@ -23,6 +23,11 @@
   <link rel="stylesheet" href="/css/MarkerCluster.css">
   <link rel="stylesheet" href="/css/MarkerCluster.Default.css">
 
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
@@ -51,8 +56,13 @@
     <a class="pure-menu-heading" href="">Spotted</a>
 
     <ul>
-      <li class="pure-menu-selected"><a href="#">Home</a></li>
-      <li><a href="#">Sign In</a></li>
+      <% if (user != null) { %>
+      <li class="pure-menu-selected"><a href="/connections">Connections</a></li>
+      <li><a href="/logout">Logout</a></li>
+      <% } else { %>
+      <li><a href="/login">Sign In</a></li>
+      <li><a href="/signup">Register</a></li>
+      <% } %>
     </ul>
   </div>
 
@@ -72,21 +82,36 @@
         <div id="<%= post._id %>" class="post" <% if(post.coords.length > 0){ %> longitude="<%=post.coords[0]%>" latitude="<%=post.coords[1]%>" <%}%> style="position:relative;">
           <div class="post-content"><%- parseURL(post.body) %></div>
         </div>
-        <div class="count-container">
+        <!--<div class="count-container">
           <%= post.ups.length %><i style="padding: 2px; float:left;" class="fa fa-heart"></i><br/>
           <%= post.downs.length %><i style="padding: 2px; float:left; font-weight:bold;" class="fa fa-frown-o"></i><br/>
-        </div>
+        </div>-->
         <!-- <i style="padding: 5px; float:right;" class="fa fa-plus"></i> use this for adding a comment-->
         <i style="padding: 5px; float:left;" class="fa fa-coffee"></i>
         <span style="float:right; padding: 2px;"> <%= post.comments.length %></span>
         <i style="padding: 5px; float:right;" class="expand-comments fa fa-comments"></i>
-        <i style="padding: 5px; float:right;" class="fa fa-thumbs-up"></i>
-        <i style="padding: 5px; float:right;" class="fa fa-thumbs-down"></i>
+        <span style="float:right; padding: 2px;"> <%= post.ups.length %></span>
+        <% if(user) {%>
+        <form id="<%= post._id %>-up-form" action="/post/<%= post._id %>/up" method="post">
+          <i style="cursor:pointer;padding: 5px; float:right;" class="fa fa-thumbs-up" onclick="submitForm('<%=post._id%>-up-form')"></i>
+        </form>
+        <% }else{%> 
+          <i style="padding: 5px; float:right;" title="Log in to vote!" class="fa fa-thumbs-up tooltip-ready" data-placement="bottom"></i>
+        <%}%>
+        <span style="float:right; padding: 2px;"> <%= post.downs.length %></span>
+        <% if(user) {%>
+        <form id="<%= post._id %>-down-form" action="/post/<%= post._id %>/down" method="post">
+        <i style="cursor:pointer;padding: 5px; float:right;" class="fa fa-thumbs-down" onclick="submitForm('<%=post._id%>-down-form')"></i>
+        </form>
+        <% }else{%> 
+        <i style="padding: 5px; float:right;" title="Log in to vote!" class="fa fa-thumbs-down tooltip-ready" data-placement="bottom"></i>
+        <%}%>
       </div>
       <% post.comments.forEach(function(c){ %>
       <div class="comment hidden"><%=c.body%></div>
       <% }); %>
       <div class="comment hidden" style="margin-left: 2px; width: 80%;">
+      <% if(user){ %>
         <form class="add-comment-form" style="text-align: center;" action="/post/<%=post._id%>/comment/anonymous" method="post" >
           <input type="hidden" name="lat" class="lat"></input>
           <input type="hidden" name="lon" class="lon"></input>
@@ -94,11 +119,20 @@
           <!-- <i class="fa fa-plus fa-lg" style="z-index: 3px;"></i> -->
           <button type="submit" style="font-weight: 200; right: -50px;height:20%;"class="pure-button">Submit</button>
         </form>
+        <%} else{%>
+        <div> <strong>Login or register to comment!</strong></div>
+        <% }%>
       </div>
     </div>
     <%});%>
     
   </div>
+
+  <!-- Temporary hack to keep from blocking posts on bottom. TODO: replace with CSS -->
+  <br/>
+  <br/>
+  <br/>
+  <br/>
 
     <div class="post-form-container">
       <button id="display-post-form-button" class="pure-button pure-button-primary" style="background: rgb(202, 60, 60); width:100%">Add a post!</button>
@@ -107,7 +141,10 @@
         <input type="hidden" name="lon" class="lon"></input>
         <textarea style="width:75%;" id="post-input" name="body" placeholder="What you wanna say? For pictures just paste a link wherever and it will load as an image in the post."></textarea>
         <br/>
-        <button style="margin-top: 16px; margin-bottom: 3px; width: 50%" class="pure-button pure-button-primary">Submit!</button> 
+        <% if(user){%><button style="margin-top: 16px; margin-bottom: 3px; width: 50%" class="pure-button pure-button-primary">Submit!</button> 
+        <% }else{ %>
+            <button type="button" style="margin-top: 16px; margin-bottom: 3px; width: 50%" class="pure-button pure-button-primary">Log in to post!</button> 
+        <% } %>
       </form>
     </div>
 

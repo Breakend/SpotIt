@@ -21,8 +21,8 @@ module.exports = function(app, passport){
 	app.post('/post/:id/up', Post.upvote);
 	app.post('/comment/:id/up', Comment.upvote);
 	app.post('/comment/:id/down', Comment.downvote);
-	app.post('/post/:id/down/anonymous', Post.anondownvote);
-	app.post('/post/:id/up/anonymous', Post.anonupvote);
+	// app.post('/post/:id/down/anonymous', Post.anondownvote);
+	// app.post('/post/:id/up/anonymous', Post.anonupvote);
 	// app.post('/comment/:id/up/anonymous', Comment.anonupvote);
 	// app.post('/comment/:id/down/anonymous', Comment.anondownvote);
 
@@ -35,7 +35,7 @@ module.exports = function(app, passport){
  			deepPopulate(user, "connections connectionPending connectionRequests connectionRequests.users connections.users connectionPending.users connections.messages connections.messages.sender", 
  				{sort:{_id:-1}}, function(err, user){
  					Connection.addNumUnread(user, function(user){
-						res.render('connections', {user: user});
+						res.render('connections-updated', {user: user});
  					});
  				});
 			});
@@ -297,9 +297,9 @@ module.exports = function(app, passport){
 		        	});
       			});
 
-				res.render("feed", { user : req.user, posts: posts, location: "McGill"}); 
+				res.render("map", { user : req.user, posts: posts, location: "McGill"}); 
 			}else{
-				res.render("feed", { user : null, posts: posts, location: "McGill"});
+				res.render("map", { user : null, posts: posts, location: "McGill"});
 			}
 		});
 	});

@@ -2,15 +2,15 @@
 var map;
 var progress = document.getElementById('progress');
 var progressBar = document.getElementById('progress-bar');
+var permissionsAllowed = false;
 
 function addGeolocationToForms(loc){
-	$(".lon").val(loc.coords.longitude);
-	$(".lat").val(loc.coords.latitude);
+	$(".lon").val(loc.lng);
+	$(".lat").val(loc.lat);
 }
 
 function addGeolocationToFormsFromCenter(){
-	var center = map.getCenter();
-	addGeolocationToForms(new L.LtLng(center[0], center[1]));
+	addGeolocationToForms(map.getCenter());
 }
 
 function goToByScroll(id){
@@ -43,6 +43,7 @@ if (navigator.geolocation){
 		function(pos){
 			displayMap(pos);
 			addGeolocationToForms(pos);
+			permissionsAllowed = true;
 		}, 
 		function(err){
 			displayError("This page won't really be as fun without your position. You can try to find yourself on the map and we'll use the center of that for posting, though.", "error");
@@ -92,7 +93,8 @@ function displayMap(currentLocation){
     });;
 
 	map.on("dragend", function(event){
-		addGeolocationToFormsFromCenter();		
+		if(!permissionsAllowed)
+			addGeolocationToFormsFromCenter();		
 	})
 }
 
