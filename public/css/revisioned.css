@@ -3,11 +3,11 @@ height:100%; position:relative; width:100%; background-color: #e9eaed;}
 
 
 @media screen and (orientation: portrait) {
-  .post-image { max-width: 90%; max-width: 70%; margin:2px;}
+  .post-image { max-width: 95%; max-width: 70%; margin:2px;}
 }
 
 @media screen and (orientation: landscape) {
-  .post-image { max-width: 90%; max-height: 70%; margin:2px;}
+  .post-image { max-width: 95%; max-height: 70%; margin:2px;}
 }
 
 textarea{
@@ -150,7 +150,7 @@ textarea{
     border: 3px solid #1f8dd6;
     font-weight: 100;
     background-color: #1f8dd6;
-    width: 22vw;
+    width: 25vw;
     border-radius: 5px;
     line-height: 1em;
     padding: .5em .6em;
@@ -179,8 +179,8 @@ textarea{
     display: inline-block;
     float: left;
     margin: 15px;
-    margin-right: 55px;
-    max-width: 40%;
+    /*margin-right: 30px;*/
+    max-width: 50%;
 }
 
 .count-container{
