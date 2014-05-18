@@ -8,6 +8,7 @@ var User = require('../app/models/user'); // User api
 var Post = require('../app/models/posts');
 var Comment = require('../app/models/comments');
 var Connection = require('../app/models/connections');
+var Tasks = require('../app/models/tasks');
 var Auth = require('./middlewares/authorization.js');
 var deepPopulate = require('../app/util/mongoose-helper.js');
 
@@ -44,6 +45,47 @@ module.exports = function(app, passport){
 		}
 			
 	});
+
+	app.get('/messages', function(req, res){
+		res.render('messages', {user: req.user})
+	})
+
+	app.post('/tasks/add', Tasks.addTask);
+	app.post('/tasks/:task_id/complete', Tasks.markComplete);
+	app.get('/tasks', function(req, res){
+		if(!req.user){
+			res.redirect('/login'); 
+			return;
+		}
+		User.findOne({_id: req.user._id}).populate('tasks').exec(function(err, user){
+			if(err){
+				res.redirect('/login');
+				return;
+			}
+
+			formatted_dates = [];
+			formatted_tasks = [];
+			user.tasks.forEach(function(task){
+				console.log(task)
+				if(formatted_dates.indexOf(task.date.toDateString()) > -1){
+					console.log("existing task")
+					formatted_tasks[formatted_dates.indexOf(task.date.toDateString())].push(task)
+				}
+				else{
+					formatted_dates.push(task.date.toDateString())
+					formatted_tasks[formatted_dates.indexOf(task.date.toDateString())] = []
+					formatted_tasks[formatted_dates.indexOf(task.date.toDateString())].push(task)
+				}
+			})
+
+			res.render('task-manager', {
+				dates : formatted_dates,
+				tasks : formatted_tasks,
+				user:req.user
+			})
+		})
+		
+	})
 	app.post('/user/:id/connect', Connection.requestConnection);
 	app.post('/user/:id/connection/accept', Connection.acceptConnection);
 	app.post('/user/:id/connection/reject', Connection.rejectConnection);
@@ -317,6 +359,32 @@ module.exports = function(app, passport){
 //*******************
 var ejs = require('ejs')
   , moment = require('moment');
+
+moment.lang('en', {
+	calendar : {
+	    lastDay : '[Yesterday]',
+	    sameDay : '[Today]',
+	    nextDay : '[Tomorrow]',
+	    lastWeek : '[last] dddd',
+	    nextWeek : 'dddd',
+	    sameElse : 'L'
+	}
+});
+
+moment.lang('ru', {
+	calendar : {
+	    lastDay : '[Вчера]',
+	    sameDay : '[Сегодня]',
+	    nextDay : '[Завтра]',
+	    lastWeek : '[Последная] dddd',
+	    nextWeek : 'dddd',
+	    sameElse : 'L'
+	}
+});
+
+ejs.filters.calendar = function(date){
+  return moment(date).calendar();
+}
 
 ejs.filters.fromNow = function(date){
   return moment(date).fromNow();

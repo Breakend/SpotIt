@@ -31,7 +31,8 @@ UserSchema = mongoose.Schema({
 	},
   	connections     : [{ type: Schema.Types.ObjectId, ref: 'Connection'}],
   	connectionPending  : [{ type: Schema.Types.ObjectId, ref: 'Connection'}], //i.e. you requested to connect with someone
-  	connectionRequests	: [{ type: Schema.Types.ObjectId, ref: 'Connection'}] //i.e. someone requested to connect with you
+  	connectionRequests	: [{ type: Schema.Types.ObjectId, ref: 'Connection'}], //i.e. someone requested to connect with you
+  	tasks : [{type: Schema.Types.ObjectId, ref: 'Task'}] //This is temporarily here, but maybe will remove on launch in favor of two different sites
 });
 
 UserSchema.statics.signup = function(firstname, lastname, email, password, done){
