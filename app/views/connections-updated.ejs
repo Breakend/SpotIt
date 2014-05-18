@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
+
+  <title>Feed</title>
+  <!-- For the autocomplete feature of post locations -->
+  <!-- <link href="/css/Autocomplete.css" rel="stylesheet"> -->
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/pure-min.css" >
+  <link rel="stylesheet" href="/css/revisioned.css" >
+  <link rel="stylesheet" href="/css/animate.css">
+  <link rel="stylesheet" href="/css/pure-extras.css">
+  <link rel="stylesheet" href="/css/connections.css">
+
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+  <%
+  var __urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+  var __imgRegex = /\.(?:jpe?g|gif|png)$/i;
+
+  function parseURL($string){
+
+    var exp = __urlRegex;
+    return $string.replace(exp,function(match){
+      __imgRegex.lastIndex=0;
+      if(__imgRegex.test(match)){
+        return '<img src="'+match+'" class="post-image" />';
+      }
+    else{
+      return '<a href="'+match+'" target="_blank">'+match+'</a>';
+    }
+  }
+  );
+  }
+  %>
+
+  <div class="home-menu pure-menu pure-menu-open pure-menu-horizontal pure-menu-fixed">
+    <a class="pure-menu-heading" style="float:left;" href="/">Spotted</a>
+
+    <ul style="float:right;">
+      <!-- <li class="pure-menu-selected"><a href="#">Home</a></li> -->
+      <% if (user != null) { %>
+      <li ><a href="/logout">Logout</a></li>
+      <% } else { %>
+      <li><a href="/login">Sign In</a></li>
+      <li><a href="/signup">Register</a></li>
+      <% } %>
+    </ul>
+  </div>
+
+<div id="layout" style="top:45px;" class="content pure-g">
+    <div id="nav" style="top: 45px;" class="pure-u">
+        <a href="#" class="nav-menu-button">Menu</a>
+
+        <div class="nav-inner">
+            <!-- <button class="primary-button pure-button">Compose</button> -->
+
+            <div class="pure-menu pure-menu-open">
+                <ul>
+                    <li><a href="/messages">Messages <span class="email-count"></span></a></li>
+                    <li class="pure-menu-selected-custom"><a href="/connections">Connections</a></li>
+                    <li><a href="#"><!-- <span class="email-label-work"></span> -->Communities</a></li>
+                    <li><a href="#"><!-- <span class="email-label-travel"></span> -->Spotted Posts</a></li>
+                    <li><a href="#"><!-- <span class="email-label-personal"></span> -->Embrs</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>  
+</div>
+
+<div class="connections-container">
+  <div class="connection-box">
+    <div style="float:left;" class="connection-image">
+      <img style="width:215px;" src="/images/profile_pictures_generic/d_silhouette_yoda.jpg">
+    </div>
+    <div style="margin-left:210px;"class="connection-description-box">
+    <button style="float:right; top:-20px; margin-right:5px;" class="close">&times;</button>
+    <p style="margin-bottom: 5px;font-size: 145%; text-align:center;">Name</p>
+    <div class="message-icon"><i style="transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;" class="fa fa-envelope fa-4x"></i></div>
+    </div>
+  </div>
+<div class="connection-box">
+    <div style="float:left;" class="connection-image">
+      <img style="width:215px;" src="/images/profile_pictures_generic/d_silhouette_yoda.jpg">
+    </div>
+    <div style="margin-left:210px;"class="connection-description-box">
+    <button style="float:right; top:-20px; margin-right:5px;" class="close">&times;</button>
+    <p style="margin-bottom: 5px;font-size: 145%; text-align:center;">Name (Pending Request)</p>
+    <div class="message-icon"><i style="transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;" class="fa fa-envelope fa-4x"></i>
+    </div>
+    <div style="float:right;" class="message-icon"><i style="transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;" class="fa fa-thumbs-up fa-4x"></i>
+    </div>
+    <div style="float:right;"class="message-icon"><i style="transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;" class="fa fa-thumbs-down fa-4x"></i>
+    </div>
+    </div>
+  </div>
+</div>
+ 
+
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="/js/jquery.autosize.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <script>
+  //TODO: Exctract into specific js file
+
+  $(".message-icon").on("mouseenter", function(event){
+      $(this).css("background", "white");
+      $(this).children(".fa").first().css("color", "#1f8dd6");
+  })
+
+  $(".message-icon").on("mouseleave", function(event){
+      $(this).css("background", "#1f8dd6");
+      $(this).children(".fa").first().css("color", "white");
+  })
+
+  </script>
+</body>
+</html>
