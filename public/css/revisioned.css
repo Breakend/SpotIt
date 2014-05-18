@@ -22,6 +22,9 @@ textarea{
  * I want to customize how my .pure-menu looks at the top of the page
  */
 
+.pure-menu-selected-custom{
+    background: rgb(0, 148, 142);
+}
 
 .home-menu {
     padding: 0.5em;

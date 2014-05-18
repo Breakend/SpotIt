@@ -15,6 +15,51 @@ a {
 
 
 /*
+* Specific styles
+*/
+.connections-container{
+    top: 48px;
+    height: 95%;
+    position: fixed;
+    width: 100%;
+    left: 150px;
+}
+
+.message-icon{
+    margin-left: 15px;
+    display:inline-block; 
+    border-radius: 5px;
+    border:2px solid; 
+    padding:7px;
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+}
+
+.connection-box{
+    position: relative;
+    display: inline-block;
+    float: left;
+    margin: 15px;
+    /*margin-right: 30px;*/
+    width: 50%;
+    color: white;
+    background: #1f8dd6;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 100;
+/*    border-radius: 10px;
+*/}
+
+.connection-description-box{
+    position: absolute;
+height: 100%;
+width: 68%;
+}
+
+/*
  * -- HELPER STYLES --
  * Over-riding some of the .pure-button styles to make my buttons look unique
  */
