@@ -66,17 +66,20 @@ module.exports = function(app, passport){
 			formatted_dates = [];
 			formatted_tasks = [];
 			user.tasks.forEach(function(task){
-				console.log(task)
+				// console.log(task)
 				if(formatted_dates.indexOf(task.date.toDateString()) > -1){
-					console.log("existing task")
+					// console.log("existing task")
 					formatted_tasks[formatted_dates.indexOf(task.date.toDateString())].push(task)
 				}
 				else{
-					formatted_dates.push(task.date.toDateString())
-					formatted_tasks[formatted_dates.indexOf(task.date.toDateString())] = []
-					formatted_tasks[formatted_dates.indexOf(task.date.toDateString())].push(task)
+					formatted_dates.unshift(task.date.toDateString())
+					formatted_tasks.unshift([])
+					formatted_tasks[0].push(task)
 				}
 			})
+
+			console.log(formatted_dates)
+			console.log(formatted_tasks)
 
 			res.render('task-manager', {
 				dates : formatted_dates,

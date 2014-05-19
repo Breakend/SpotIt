@@ -87,39 +87,61 @@
 </div>
 
 <div class="connections-container">
+<!-- Connections -->
+<% user.connections.forEach(function(connection){ %>
+  <% connection.users.forEach(function(usr){ %>
+  <% if (!usr._id.equals(user._id)) { %>
   <div class="connection-box">
     <div style="float:left;" class="connection-image">
-      <img style="width:215px;" src="/images/profile_pictures_generic/d_silhouette_yoda.jpg">
+      <% if(usr.profile_picture){%>
+        <img style="height:135px;" onerror="this.src='/images/profile_pictures_generic/d_silhouette_yoda.jpg'" src="<%= usr.profile_picture %>?height=135&width=215">
+      <% }else{ %>
+        <img style="height:135px;" src="/images/profile_pictures_generic/d_silhouette_yoda.jpg">
+      <% } %>
     </div>
     <div style="margin-left:210px;"class="connection-description-box">
     <button style="float:right; top:-20px; margin-right:5px;" class="close">&times;</button>
-    <p style="margin-bottom: 5px;font-size: 145%; text-align:center;">Name</p>
-    <div class="message-icon"><i style="transition: all 0.2s;
+    <p style="margin-bottom: 5px;font-size: 145%; text-align:center;"><%=usr.firstName %> <%=usr.lastName%></p>
+    <a style="color: white;" href="connection/<%=connection._id%>/messages"><div class="message-icon"><i style="transition: all 0.2s;
     -webkit-transition: all 0.2s;
-    -moz-transition: all 0.2s;" class="fa fa-envelope fa-4x"></i></div>
+    -moz-transition: all 0.2s;" class="fa fa-envelope fa-4x"></i></div></a>
     </div>
   </div>
+<%}})%>
+<% })%>
+<!-- Pending Connections --> 
+<% user.connectionRequests.forEach(function(connection){ %>
+  <% connection.users.forEach(function(usr){ %>
+  <% if (!usr._id.equals(user._id)) { %>
 <div class="connection-box">
     <div style="float:left;" class="connection-image">
-      <img style="width:215px;" src="/images/profile_pictures_generic/d_silhouette_yoda.jpg">
+     <% if(usr.profile_picture){%>
+        <img style="height:135px;" onerror="this.src='/images/profile_pictures_generic/d_silhouette_yoda.jpg'" src="<%= usr.profile_picture %>?height=135&width=215">
+      <% }else{ %>
+        <img style="height:135px;" src="/images/profile_pictures_generic/d_silhouette_yoda.jpg">
+      <% } %>
     </div>
     <div style="margin-left:210px;"class="connection-description-box">
     <button style="float:right; top:-20px; margin-right:5px;" class="close">&times;</button>
-    <p style="margin-bottom: 5px;font-size: 145%; text-align:center;">Name (Pending Request)</p>
-    <div class="message-icon"><i style="transition: all 0.2s;
+    <p style="margin-bottom: 5px;font-size: 145%; text-align:center;"><%=usr.firstName %> <%=usr.lastName%> (Pending Request)</p>
+  <a style="color: white;" href="connection/<%=connection._id%>/messages"><div class="message-icon"><i style="transition: all 0.2s;
     -webkit-transition: all 0.2s;
-    -moz-transition: all 0.2s;" class="fa fa-envelope fa-4x"></i>
-    </div>
-    <div style="float:right;" class="message-icon"><i style="transition: all 0.2s;
+    -moz-transition: all 0.2s;" class="fa fa-envelope fa-4x"></i></div></a>
+    <form style="cursor: pointer; display:inline-block; float:right;" action="/user/<%=usr._id%>/connection/accept" method="post"><div onclick="$(this).parents('form').first().submit()" style="float:right;" class="message-icon"><i style="transition: all 0.2s;
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;" class="fa fa-thumbs-up fa-4x"></i>
     </div>
-    <div style="float:right;"class="message-icon"><i style="transition: all 0.2s;
+    </form>
+    <form style="cursor:pointer;display:inline-block; float:right;" action="/user/<%=usr._id%>/connection/reject" method="post">
+    <div onclick="$(this).parents('form').first().submit()" style="float:right;"class="message-icon"><i style="transition: all 0.2s;
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;" class="fa fa-thumbs-down fa-4x"></i>
     </div>
+    </form>
     </div>
   </div>
+<%}})%>
+<% })%>
 </div>
  
 

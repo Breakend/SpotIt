@@ -43,10 +43,10 @@
 .splash {
     /* absolute center .splash within .splash-container */
     width: 80%;
-    height: 50%;
+    /*height: 50%;*/
     margin: auto;
-    position: absolute;
-    top: 100px; left: 0; bottom: 0; right: 0;
+    position: relative;
+    top: 100px; left: 0; right: 0;
     text-align: center;
     text-transform: uppercase;
 }
@@ -141,9 +141,9 @@
         $(this).parents().first().children(".task-container").slideToggle();
     })
 
-    $(".task").on("mouseenter mouseleave", function(event){
-        $(this).children(".delete-task-button").first().slideToggle();
-    })
+    // $(".task").on("mouseenter mouseleave", function(event){
+        // $(this).children(".delete-task-button").first().slideToggle();
+    // })
   </script>
 
 
