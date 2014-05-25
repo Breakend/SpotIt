@@ -4,6 +4,7 @@ var geocoder;
 var progress = document.getElementById('progress');
 var progressBar = document.getElementById('progress-bar');
 var permissionsAllowed = false;
+var markers;
 
 function codeAddress(address, callback) {
   geocoder.geocode( { 'address': address}, function(results, status) {
@@ -108,6 +109,9 @@ function displayMap(currentLocation){
 	
 	var markerList = [];
 
+	markers = L.markerClusterGroup({ chunkedLoading: true, chunkProgress: updateProgressBar });
+
+
 	$(".post").each(function(i, post){
 		if(typeof($(post).attr("longitude")) != 'undefined' && typeof($(post).attr("latitude"))!='undefined'){
 			markerList.push(L.marker([$(post).attr("longitude"), $(post).attr("latitude")], {title : $(post).attr("id")}).on("click", selectPost));
@@ -115,7 +119,6 @@ function displayMap(currentLocation){
 	})
 	.promise()
     .done( function() {
-		var markers = L.markerClusterGroup({ chunkedLoading: true, chunkProgress: updateProgressBar });
 		markers.addLayers(markerList);
 		map.addLayer(markers);
     });;

@@ -18,10 +18,11 @@
   <link rel="stylesheet" href="/css/pure-min.css" >
   <link rel="stylesheet" href="/css/revisioned.css" >
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
-  <link rel="stylesheet" href="/css/animate.css">
-  <link rel="stylesheet" href="/css/pure-extras.css">
   <link rel="stylesheet" href="/css/MarkerCluster.css">
   <link rel="stylesheet" href="/css/MarkerCluster.Default.css">
+  <link rel="stylesheet" href="/css/animate.css">
+  <link rel="stylesheet" href="/css/pure-extras.css">
+
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -35,9 +36,14 @@
   <%
   var __urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
   var __imgRegex = /\.(?:jpe?g|gif|png)$/i;
+  var __line_breaks = /(?:\r\n|\r|\n)/g;
 
   function parseURL($string){
 
+    $string = $string.replace(__line_breaks, function(match){
+      return '<br/>';
+    })
+    
     var exp = __urlRegex;
     return $string.replace(exp,function(match){
       __imgRegex.lastIndex=0;
@@ -80,7 +86,7 @@
       <div class="post-wrapper">
 
         <div id="<%= post._id %>" class="post" <% if(post.coords.length > 0){ %> longitude="<%=post.coords[0]%>" latitude="<%=post.coords[1]%>" <%}%> style="position:relative;">
-          <div class="post-content"><%- parseURL(post.body) %></div>
+          <div class="post-content break-word"><%- parseURL(post.body) %></div>
         </div>
         <!--<div class="count-container">
           <%= post.ups.length %><i style="padding: 2px; float:left;" class="fa fa-heart"></i><br/>
@@ -119,7 +125,7 @@
         <%}%>
       </div>
       <% post.comments.forEach(function(c){ %>
-      <div class="comment hidden"><%=c.body%></div>
+      <div class="comment break-word hidden"><%=c.body%></div>
       <% }); %>
       <div class="comment hidden" style="margin-left: 2px; width: 80%;">
       <% if(user){ %>
@@ -166,13 +172,13 @@
   <!-- Placed at the end of the document so the pages load faster -->
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+  <script src="/js/leaflet.markercluster.js"></script>
   <script src="/js/masonry.pkgd.min.js"></script>
   <script src="/js/jquery.autosize.min.js"></script>
   <script src="/js/bootstrap.js"></script>
   <script src="/js/main-page.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
   <script src="/js/leaflet-map.js"></script>
-  <script src="/js/leaflet.markercluster.js"></script>
 
 </body>
 </html>

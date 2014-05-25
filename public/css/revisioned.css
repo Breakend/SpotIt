@@ -117,11 +117,6 @@ textarea{
 
 .comment{
     font-size: 12px;
-    word-break:break-all;
-    word-wrap: break-word;
-    hyphens: auto;
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
     font-weight: bold;
     color: white;
     border: 3px solid #811919;
@@ -138,14 +133,21 @@ textarea{
     width: 80%
 }
 
+.break-word {
+-ms-word-break: break-all;
+-ms-word-wrap: break-all;
+-webkit-word-break: break-word;
+-webkit-word-wrap: break-word;
+word-break: break-word;
+word-wrap: break-word;
+-webkit-hyphens: auto;
+-moz-hyphens: auto;
+hyphens: auto;
+}
+
 .post{
     font-size: 15px;
     font-weight: bold;
-    word-break:break-all;
-    word-wrap: break-word;
-    hyphens: auto;
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
     transition: all 0.2s;
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;
@@ -153,7 +155,7 @@ textarea{
     border: 3px solid #1f8dd6;
     font-weight: 100;
     background-color: #1f8dd6;
-    width: 25vw;
+    width: 25vw; /* 52vw is for full column*/
     border-radius: 5px;
     line-height: 1em;
     padding: .5em .6em;
