@@ -1,8 +1,19 @@
 // create a map in the "map" div, set the view to a given place and zoom
 var map;
+var geocoder;
 var progress = document.getElementById('progress');
 var progressBar = document.getElementById('progress-bar');
 var permissionsAllowed = false;
+
+function codeAddress(address, callback) {
+  geocoder.geocode( { 'address': address}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      callback(null, results[0]);
+    } else {
+  		callback('Geocode was not successful for the following reason: ' + status, null);
+    }
+  });
+}
 
 function addGeolocationToForms(loc){
 	$(".lon").val(loc.lng);
@@ -20,8 +31,6 @@ function goToByScroll(id){
         'slow');
 }
 
-
-
 function updateProgressBar(processed, total, elapsed, layersArray) {
 	if (elapsed > 1000) {
 		// if it takes more than a second to load, display the progress bar:
@@ -36,6 +45,7 @@ function updateProgressBar(processed, total, elapsed, layersArray) {
 }
 
 $(document).ready(function(){
+geocoder = new google.maps.Geocoder();
 
 
 if (navigator.geolocation){
@@ -58,6 +68,24 @@ else{
 	addGeolocationToFormsFromCenter();
 }
 
+
+$(".add-post-form").submit(function(event){
+	console.log("submitting");
+	var form = $(this)
+	var address = $(this).children("#location").first().val()
+	if(address){
+		event.preventDefault(); //prevent the submit
+		codeAddress(address, function(err, coords){
+			if(coords){
+				form.children(".lat").val(coords.geometry.location.lat());
+				form.children(".lon").val(coords.geometry.location.lng());
+				form[0].submit();
+			}else{
+				alert(err);
+			}
+		})
+	}
+})
 
 });
 

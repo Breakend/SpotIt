@@ -15,9 +15,10 @@ var deepPopulate = require('../app/util/mongoose-helper.js');
 module.exports = function(app, passport){
 
 	app.post('/post/new', Post.createPost);
-	app.post('/post/new/anonymous', Post.anonPost);
+	// app.post('/post/new/anonymous', Post.anonPost);
 	app.post('/post/:id/comment', Post.comment);
-	app.post('/post/:id/comment/anonymous', Post.anonComment); //TODO: remove this, just for test for now
+	app.post('/post/:id/delete', Post.remove)
+	// app.post('/post/:id/comment/anonymous', Post.anonComment); //TODO: remove this, just for test for now
 	app.post('/post/:id/down', Post.downvote);
 	app.post('/post/:id/up', Post.upvote);
 	app.post('/comment/:id/up', Comment.upvote);
@@ -315,7 +316,7 @@ module.exports = function(app, passport){
 	app.get('/', function(req, res){
 		// Post.getAll(function(error, posts){
 		//Going to start off with just mcgill for now
-		Post.find({location: 'McGill'})
+		Post.find()
 		.populate('comments ups downs')
 		.sort({date : -1})
 		.exec(function(error, posts){

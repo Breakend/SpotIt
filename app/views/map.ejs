@@ -87,7 +87,18 @@
           <%= post.downs.length %><i style="padding: 2px; float:left; font-weight:bold;" class="fa fa-frown-o"></i><br/>
         </div>-->
         <!-- <i style="padding: 5px; float:right;" class="fa fa-plus"></i> use this for adding a comment-->
-        <i style="padding: 5px; float:left;" class="fa fa-coffee"></i>
+        <% if(user) {%>
+          <% if(post.user_id != null && post.user_id != user.id){%>
+          <form id="<%= post._id %>-connection-form" action="/user/<%= post.user_id %>/connect" method="post">
+              <i style="cursor:pointer; padding: 5px; float:left;" onclick="submitForm('<%= post._id %>-connection-form')" class="fa fa-coffee"></i>
+          </form>
+          <% }else{ %>
+          <form id="<%= post._id %>-delete-form" action="/post/<%= post._id %>/delete" method="post">
+              <i style="cursor:pointer; padding: 5px; float:left;" onclick="submitForm('<%= post._id %>-delete-form')" class="fa fa-times"></i>
+          </form>          
+        <% }}else{%> 
+          <i style="padding: 5px; float:left;" title="Login to connect with this user!" class="fa fa-coffee tooltip-ready" data-placement="bottom"></i>
+        <%}%>
         <span style="float:right; padding: 2px;"> <%= post.comments.length %></span>
         <i style="padding: 5px; float:right;" class="expand-comments fa fa-comments"></i>
         <span style="float:right; padding: 2px;"> <%= post.ups.length %></span>
@@ -112,7 +123,7 @@
       <% }); %>
       <div class="comment hidden" style="margin-left: 2px; width: 80%;">
       <% if(user){ %>
-        <form class="add-comment-form" style="text-align: center;" action="/post/<%=post._id%>/comment/anonymous" method="post" >
+        <form class="add-comment-form" style="text-align: center;" action="/post/<%=post._id%>/comment" method="post" >
           <input type="hidden" name="lat" class="lat"></input>
           <input type="hidden" name="lon" class="lon"></input>
           <textarea name="body" class="comment-input" style="color: black; height: 2em; width: 100%; margin-bottom: 5px;" placeholder="Add a comment!"></textarea>
@@ -136,10 +147,14 @@
 
     <div class="post-form-container">
       <button id="display-post-form-button" class="pure-button pure-button-primary" style="background: rgb(202, 60, 60); width:100%">Add a post!</button>
-      <form class="add-post-form" style="display:none;" action="/post/new/anonymous" method="post">
+      <form class="add-post-form" style="display:none;" action="/post/new/" method="post">
         <input type="hidden" name="lat" class="lat"></input>
         <input type="hidden" name="lon" class="lon"></input>
+        <!--TODO: auto textarea grow doesn't work on this one -->
         <textarea style="width:75%;" id="post-input" name="body" placeholder="What you wanna say? For pictures just paste a link wherever and it will load as an image in the post."></textarea>
+        <br/> <br/>
+        <!-- TODO: make this pretty -->
+        <input type="text" style="width:65%" name="location" id="location" placeholder="Saw something somewhere else? Put the address here and we'll drop the marker where it needs to go!"></input>
         <br/>
         <% if(user){%><button style="margin-top: 16px; margin-bottom: 3px; width: 50%" class="pure-button pure-button-primary">Submit!</button> 
         <% }else{ %>
@@ -155,6 +170,7 @@
   <script src="/js/jquery.autosize.min.js"></script>
   <script src="/js/bootstrap.js"></script>
   <script src="/js/main-page.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
   <script src="/js/leaflet-map.js"></script>
   <script src="/js/leaflet.markercluster.js"></script>
 
