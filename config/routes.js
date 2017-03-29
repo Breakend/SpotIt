@@ -1,7 +1,7 @@
 /*
  *	routes.js
- *	
- *	This file contains all the routes served by the node.js app 
+ *
+ *	This file contains all the routes served by the node.js app
  */
 
 var User = require('../app/models/user'); // User api
@@ -34,7 +34,7 @@ module.exports = function(app, passport){
 			// .populate('connections connectionPending connectionRequests')
 			.exec(function(error, user){
 			//TODO: maybe make this better so not populating so much..?
- 			deepPopulate(user, "connections connectionPending connectionRequests connectionRequests.users connections.users connectionPending.users connections.messages connections.messages.sender", 
+ 			deepPopulate(user, "connections connectionPending connectionRequests connectionRequests.users connections.users connectionPending.users connections.messages connections.messages.sender",
  				{sort:{_id:-1}}, function(err, user){
  					Connection.addNumUnread(user, function(user){
 						res.render('connections-updated', {user: user});
@@ -44,7 +44,7 @@ module.exports = function(app, passport){
 		}else{
 			res.redirect("/login");
 		}
-			
+
 	});
 
 	app.get('/messages', function(req, res){
@@ -55,7 +55,7 @@ module.exports = function(app, passport){
 	app.post('/tasks/:task_id/complete', Tasks.markComplete);
 	app.get('/tasks', function(req, res){
 		if(!req.user){
-			res.redirect('/login'); 
+			res.redirect('/login');
 			return;
 		}
 		User.findOne({_id: req.user._id}).populate('tasks').exec(function(err, user){
@@ -88,7 +88,7 @@ module.exports = function(app, passport){
 				user:req.user
 			})
 		})
-		
+
 	})
 	app.post('/user/:id/connect', Connection.requestConnection);
 	app.post('/user/:id/connection/accept', Connection.acceptConnection);
@@ -118,13 +118,13 @@ module.exports = function(app, passport){
 	});
 
 	/*
-	 * Setup pass-reset. 
+	 * Setup pass-reset.
 	 * TODO: This should probably be moved to the app.js. But there were problems,
 	 * So temporarily it's here...
 	 *
 	 */
 	var passreset = require('pass-reset');
-	
+
 	passreset.expireTimeout(12, 'hours');
 
 	passreset.lookupUsers(function(login, callback) {
@@ -176,11 +176,11 @@ module.exports = function(app, passport){
 
 	// Get: login screen
 	app.get('/login', function(req, res){
-		res.render('login', { err : req.flash('error') } ); // Return index.ejs in root directory 
+		res.render('login', { err : req.flash('error') } ); // Return index.ejs in root directory
 	});
 
 	// Login post
-	app.post("/login" 
+	app.post("/login"
 		,passport.authenticate('local',{
 			successRedirect : "/",
 			failureRedirect : "/login",
@@ -192,8 +192,8 @@ module.exports = function(app, passport){
 	* Facebook sign in
 	*/
 	app.get("/auth/facebook", passport.authenticate("facebook", {scope: "email"}));
-    app.get("/auth/facebook/callback", 
-        passport.authenticate("facebook",{ 
+    app.get("/auth/facebook/callback",
+        passport.authenticate("facebook",{
         	successRedirect : "/",
 			failureRedirect : "/login",
 			failureFlash: true
@@ -205,8 +205,8 @@ module.exports = function(app, passport){
     */
     app.get('/auth/google', passport.authenticate('google',  { scope: ['https://www.googleapis.com/auth/userinfo.profile',
                                             'https://www.googleapis.com/auth/userinfo.email'] }));
-	app.get('/auth/google/callback', 
-	  passport.authenticate('google', 
+	app.get('/auth/google/callback',
+	  passport.authenticate('google',
 	  	{failureRedirect: '/login' }),
 	      function(req,res){
 	      	res.redirect('/');
@@ -214,12 +214,12 @@ module.exports = function(app, passport){
 	);
 
 	// Get: signup
-	app.get("/signup", function(req, res){ 
+	app.get("/signup", function(req, res){
 		console.log("THE REQ:" +req.Object);
 		res.render("signup", { err : req.flash('error') } );
 	});
 
-	// Sign 
+	// Sign
 	app.post("/signup", Auth.userExist, function (req, res, next) {
 		console.log("routes.js: start sign up");
 		User.signup(req.body.firstName, req.body.lastName, req.body.email, req.body.password, function(err, user){
@@ -262,14 +262,14 @@ module.exports = function(app, passport){
 		        	});
       			});
 
-				res.render("feed", { user : req.user, posts: posts, location: req.params.location}); 
+				res.render("feed", { user : req.user, posts: posts, location: req.params.location});
 			}else{
 				res.render("feed", { user : null, posts: posts, location: req.params.location});
 			}
 		});
 	});
 
-	
+
 	app.get('/map/:location', function(req, res){
 		Post.find({location: req.params.location})
 		.populate('comments ups downs')
@@ -300,14 +300,14 @@ module.exports = function(app, passport){
 		        	});
       			});
 
-				res.render("map", { user : req.user, posts: posts, location: req.params.location}); 
+				res.render("map", { user : req.user, posts: posts, location: req.params.location});
 			}else{
 				res.render("map", { user : null, posts: posts, location: req.params.location});
 			}
 		});
 	});
 
-	
+
 
 
 
@@ -343,7 +343,7 @@ module.exports = function(app, passport){
 		        	});
       			});
 
-				res.render("map", { user : req.user, posts: posts, location: "McGill"}); 
+				res.render("map", { user : req.user, posts: posts, location: "McGill"});
 			}else{
 				res.render("map", { user : null, posts: posts, location: "McGill"});
 			}
